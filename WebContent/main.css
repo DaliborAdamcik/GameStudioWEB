@@ -1,0 +1,178 @@
+@CHARSET "UTF-8";
+
+@import 'https://fonts.googleapis.com/css?family=Katibeh';
+@import 'https://fonts.googleapis.com/css?family=Oxygen';
+@import 'https://fonts.googleapis.com/css?family=Pattaya';
+
+html, body {
+	background-color: #7575a3;
+	font-family: 'Oxygen', sans-serif;
+}
+input, textarea {
+	font-family: 'Oxygen', sans-serif;
+}
+
+header .title {
+	font-family: 'Katibeh', cursive;
+	font-size: 4em;
+	color: #ff8080;
+	text-shadow: 2px 2px #660000;
+}
+	
+div#mainmenu
+{
+	/*border: 1px solid red;*/
+	margin-bottom: 0.5em;
+	background: linear-gradient(to bottom right, RGBA(0,0,0,0.25), RGBA(0,0,0,0.75));
+	padding: 0.5em;
+	padding-right: 1.5em;
+	border-radius: 1em;
+}
+
+#mainmenu .menuactive {
+	color: #66ff66;
+	text-shadow: 2px 2px #006600;
+}
+
+#mainmenu span {
+	font-family: 'Pattaya', sans-serif;
+	color: white;
+	font-size: 1.5em;	
+	padding-left: 1em;
+	text-shadow: 2px 2px #595959;
+	cursor: pointer;
+}
+
+#mainmenu span:HOVER {
+	color: #99ffff;
+	text-shadow: 2px 2px #000099;
+}
+
+span#gs_signin {
+	float: right;
+}
+
+div .comment {
+	border-bottom: 1px solid silver;
+	margin-bottom: 0.3em;
+} 
+
+.comusr
+{
+	border-radius: 0.3em;
+	background-color: rgba(0,204,255,0.5);
+	margin-left: 0.4em;
+	padding: 0 0.1em;
+}
+
+.comdat
+{
+	font-size: 0.7rem;
+	border-radius: 0.3em;
+	background-color: rgba(128,128,128,0.5);
+	padding: 0 0.1em;
+}
+
+.comcom {
+	padding: 0 1em;
+}
+
+#gameboxer, #gameattrib {
+	display: inline-block;
+	width: 45%;
+	min-height: 25%;
+	/*border: 2px solid red;*/
+	margin: 0 1em; 
+} 
+#gamecontent {float: left;} #gameattrib {float: right;}
+
+#rating {
+	background-image: url("img/starssilver.png");
+	width: 160px;
+	height: 32px;
+}
+
+#ratinggold {
+	background-image: url("img/starsgold.png");
+	height: 32px;
+	width: 0px;
+	transition: width 1s ease-in-out, left 1.5s ease-in-out;
+}
+
+#rate {
+	font-size: 0.8em;
+}
+#rate img {
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
+#loader {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(51,51,51,0.75);
+	display: none;
+}
+
+#loader img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#gameattrib, #addcoment, #rate {
+	display:none;
+}
+
+#addcomment {
+	margin: 0.5em;
+}
+
+
+.nicewindow {
+	background: linear-gradient(to bottom right, RGBA(0,0,0,0.25), RGBA(0,0,0,0.5));
+    box-shadow: 0 0 2em #888888;
+    /*box-shadow: 1em 1em 2em #888888;*/
+    border: 2px solid RGBA(0,0,0,0.5);
+	padding: 2em;
+    border-radius: 0.7em;
+ 	visibility: hidden;
+  	opacity: 0;
+  	transition: opacity 0.7s linear;
+}
+
+#winner {
+    background-color: #00e68a;
+	width: 15em;
+    height: 5em;
+
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+}
+
+#winner > div {
+	font-size: 2em;
+}
+
+#signin {
+	background-color: #bfbfbf;
+	min-width: 2em;
+	display: inline-block;
+	position: absolute;
+	right: 1em;
+	top: 9em;
+	
+}
+
+
+
+

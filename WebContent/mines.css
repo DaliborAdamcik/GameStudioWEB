@@ -1,0 +1,60 @@
+@CHARSET "UTF-8";
+
+@import 'https://fonts.googleapis.com/css?family=Lobster';
+
+.close {
+    background: url('img/tiles.png') -48px -48px;
+}
+
+.open {
+    background: url('img/tiles.png') 0 0;
+}
+
+.bomb {
+    background: url('img/tiles.png') 0 -96px;
+}
+
+.mark {
+    background: url('img/tiles.png') 0 -48px;
+}
+
+#gamecontent td, .guessdiv {
+    width:  46px;
+    height: 46px;
+	text-align: center;
+	font-family: 'Lobster', cursive;
+	font-size: 1.3em;
+}
+
+.clickable {
+	cursor: pointer;
+    background: url('img/tiles.png') -48px 0;
+}
+
+.guessdiv {
+	display: inline-block;
+	position: absolute; 
+	border-radius: 0.5em;
+	background-color: lime;
+}
+
+.fadei {
+	animation: fadein 2s;
+	animation-fill-mode: forwards;
+}
+
+.fadeo {
+	animation: fadeout 2s;
+	animation-fill-mode: forwards;
+}
+
+@keyframes fadein {
+    from { opacity: 0;}
+    to   { opacity: 1;}
+}
+
+@keyframes fadeout {
+    0% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+

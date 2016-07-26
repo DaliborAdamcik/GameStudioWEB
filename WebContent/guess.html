@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="windows-1250">
+<title>Game studio ;)</title>
+	<script type='text/javascript' src='ajax.js'></script>
+	<script type='text/javascript' src='guess.js'></script>
+
+<link rel="stylesheet" type="text/css" href="mines.css">
+</head>
+<body>
+	<h1>Guess the number</h1>
+		Width <input type='number' min=10 max=100 id='guess_maxnum' value="20" />
+		<input type='button' value='Start new game :)' onclick="guess_newgame(document.getElementById('guess_maxnum').value);" />
+	<br />
+	<hr />
+	<h2 id="iguess"></h2>
+	<div id="gamecontent">
+	
+	</div>
+</body>
+</html>

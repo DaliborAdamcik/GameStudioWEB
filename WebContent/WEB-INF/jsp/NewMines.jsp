@@ -1,0 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=windows-1250"
+    pageEncoding="windows-1250"%>
+Width <input type='number' min=2 max=10 id='mine_row' value="2" />
+Height <input type='number' min=2 max=10 id='mine_col' value="2"  />
+Mines <input type='number' min=2 max=10 id='mine_mine'  value="1" />
+<input type='button' value='Start new game :)' onclick="mines_newgame();" />
+<ul>
+	<li>Unmarked mines: <span id="unmark"></span></li>
+	<li>State: <span id="state"></span></li>
+</ul>

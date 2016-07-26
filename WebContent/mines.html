@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="windows-1250">
+<title>Game studio ;)</title>
+<link rel="stylesheet" type="text/css" href="mines.css">
+<script type='text/javascript' src='ajax.js'></script>
+<script type='text/javascript' src='mines.js'></script>
+</head>
+<body>
+	<h1>Minesweeper</h1>
+		Width <input type='number' min=2 max=10 id='row' value="2" />
+		Height <input type='number' min=2 max=10 id='col' value="2"  />
+		Mines <input type='number' min=2 max=10 id='mine'  value="1" />
+		<input type='button' value='Start new game :)' onclick="mines_newgame();" />
+	<br />
+	<hr />
+	<ul>
+		<li>Unmarked mines: <span id="unmark"></span></li>
+		<li>State: <span id="state"></span></li>
+	</ul>
+	
+	<div id="gamecontent">
+	
+	</div>
+</body>
+</html>
