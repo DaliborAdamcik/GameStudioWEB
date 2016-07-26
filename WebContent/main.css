@@ -170,7 +170,27 @@ div .comment {
 	position: absolute;
 	right: 1em;
 	top: 9em;
-	
+}
+
+#scores table {
+	border-collapse: collapse;
+	margin-bottom: 0.5em;
+}
+
+#scores tr > td {
+	border-bottom: 0.1em solid silver;
+	padding: 0 0.5em;
+}
+
+#scores tr:HOVER >td {
+	background-color: #e6e6ff;
+	border-radius: 0.1em; 
+}
+
+#scores tr > th {
+	border-bottom: 0.2em solid black;
+	text-shadow: 0.05em 0.05em silver;
+	padding: 0 0.5em;
 }
 
 

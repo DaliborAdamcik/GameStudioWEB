@@ -36,16 +36,14 @@
 				<img src="img/star.png" onclick="gs_rate(4);" alt="star">
 				<img src="img/star.png" onclick="gs_rate(5);" alt="star">
 			</div>
-	
+
+			<div id="scores"></div>
 			<div id="addcoment">
 				Add comment<br/>
 				<textarea rows="5" cols="30" id="newcomment"></textarea><br/>
-				<input type="button" value="Add comment" onclick="gs_addComment(document.getElementById('newcomment').value);">
+				<input type="button" value="Add comment" onclick="gs_addComment(document.getElementById('newcomment'));">
 			</div>
 			<div id="comments"></div>
-			Top score: <br/>
-			<div id="scores">
-			</div>
 		</div>
 	</div>	
 	

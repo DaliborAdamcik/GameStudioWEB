@@ -45,18 +45,36 @@ function menuItemClick(gID)
 	document.getElementById('mgi_'+activegame).className = 'menuactive';
 	
 	gs_showComment();
-	gs_showSocre();
 	document.getElementById('gameattrib').style.display = 'inline-block';
 }
 
 function gs_showComment()
 {
-	mainAjax('gameID='+activegame+'&option=comment', function (comms){document.getElementById('comments').innerHTML = comms;})
+	mainAjax('gameID='+activegame+'&option=commentandscore', function (comandsco){
+		var regex = /<!--\scom\s-->([\s|\S|\n]*)<!--\s\/com\s-->[\n|\s|\S]*<!--\ssco\s-->([\s|\S|\n]*)<!--\s\/sco\s-->/gm
+		var resu = regex.exec(comandsco);
+		
+		document.getElementById('scores').innerHTML = '<i>You are first playing this game!</i>';
+		document.getElementById('comments').innerHTML = '<i>Add comment as first</i>';
+
+		if(resu==null)
+			return;
+		
+		if(gs_replycount(resu[1])>0)
+			document.getElementById('comments').innerHTML = resu[1];
+		
+		if(gs_replycount(resu[2])>0)
+			document.getElementById('scores').innerHTML = resu[2];
+	})
 }
 
-function gs_showSocre()
+function gs_replycount(data)
 {
-	mainAjax('gameID='+activegame+'&option=score', function (score){document.getElementById('scores').innerHTML = score;})
+	var regex = /<!--ic:(\d)+-->/g;
+	var res = regex.exec(data); 
+	if(res==null)
+		return 0;
+	return parseInt(res[1]);
 }
 
 function showdiv(divid)
@@ -122,8 +140,9 @@ function studio_parse(resp) // an entry point for json DATA
 		var el = document.getElementById('gs_signin');
 		el.innerHTML = dat.username;
 		el.onclick= function () {};
-		
-	}
+		document.getElementById('rate').style.display='block';
+		document.getElementById('addcoment').style.display='block';
+	}//TODO signed out?
 	
 }
 
@@ -131,10 +150,11 @@ function gs_addComment(comme)
 {
 	// validate comment here
 	var comval = { };
-	comval.comm = comme;
+	comval.comm = comme.value;
 	mainAjax('gameID='+activegame+'&option=addcomment&comment='+JSON.stringify(comval), function (comms){
+		comme.value='';
 		gs_showComment();
-		})
+	})
 }
 
 function gs_rate(num)

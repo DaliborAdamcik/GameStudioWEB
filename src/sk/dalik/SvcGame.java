@@ -84,9 +84,10 @@ public class SvcGame extends HttpServlet {
 
 			switch(request.getParameter("option"))
 			{
-			case "comment":
+			case "commentandscore":
+				request.setAttribute("scores", score.topScores(gam));
 				request.setAttribute("comments", comme.commentsFor(gam));
-				request.getRequestDispatcher("/WEB-INF/jsp/comments.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/jsp/comscore.jsp").include(request, response);
 				purecode = true;
 				break;
 			case "addcomment":
@@ -97,11 +98,6 @@ public class SvcGame extends HttpServlet {
 				CommentEntity comment = new CommentEntity(gam, user.me(), jsn.getString("comm"));
 				comme.addComment(comment);
 				//response.getWriter().println("OK "+comment.getID());
-				break;
-			case "score":
-				request.setAttribute("scores", score.topScores(gam));
-				request.getRequestDispatcher("/WEB-INF/jsp/scores.jsp").include(request, response);
-				purecode = true;
 				break;
 			case "play":
 				request.getRequestDispatcher(gam.getServletPath()).include(request, response);
