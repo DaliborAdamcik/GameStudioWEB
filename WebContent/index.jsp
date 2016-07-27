@@ -55,7 +55,7 @@
 			<tr><td>Password:</td><td><input type="password" id="gs_reg_pass1" onkeyup="gs_reg_validpass();" /></td><td><img src="img/err.png" id="val_pass" alt="bee" /></td></tr>
 			<tr><td>Retype password:</td><td><input type="password" id="gs_reg_pass2" onkeyup="gs_reg_validpass();" /></td></tr>
 			<tr><td>&nbsp;</td><td></td></tr>
-			<tr><td></td><td><input type="button" onclick="gs_doregister();" value="Register me"></td></tr>
+			<tr><td></td><td><input type="button" onclick="gs_doregister();" value="Register me">  <input type="button" onclick="gs_hideregister();" value="Cancel"></td></tr>
 		</table>
 	</div>
 	

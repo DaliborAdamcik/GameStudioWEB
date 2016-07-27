@@ -55,12 +55,6 @@ public class SvcGame extends HttpServlet {
 				RatingService rating = new sk.tsystems.gamestudio.services.jpa.RatingSvc();*/
 		)
 		{
-			if(request.getParameter("signout")!=null)
-			{
-				request.getSession().setAttribute("username", null);
-				json.put("signout", true);
-			}
-			
 			if(request.getParameter("checknick")!=null)
 			{
 				String nick = request.getParameter("checknick").trim();
@@ -70,7 +64,7 @@ public class SvcGame extends HttpServlet {
 				return ;
 			}
 			
-			if(request.getParameter("regiSTER")!=null)
+			if(request.getParameter("accact")!=null&&"register".equals(request.getParameter("accact")))
 			{
 				json.put("regmsg", "initialization failed:");
 				try
@@ -86,9 +80,13 @@ public class SvcGame extends HttpServlet {
 					else
 					{ 
 						UserEntity usrik = user.addUser(nick); 
+						usrik.setPassword(pass);
+						if(!user.updateUser(usrik))
+							json.put("error", "error setting password");
+							
 						json.put("add", usrik!=null);
 						json.put("regmsg", usrik!=null?"ok":"fail");
-						request.getSession().setAttribute("username", nick);
+						request.getSession().setAttribute("userID", usrik.getID());
 					}
 				}
 				catch(NullPointerException e)
@@ -98,22 +96,37 @@ public class SvcGame extends HttpServlet {
 				}
 			}
 
-			
-			
-			String userName = request.getParameter("username");
-			if(userName!=null)
-				request.getSession().setAttribute("username", userName);
-			else
-				userName = (String) request.getSession().getAttribute("username");
-			
-			if(userName!= null)
+			if(request.getParameter("accact")!=null&&"signin".equals(request.getParameter("accact")))
 			{
-				if(user.auth(userName))
+				String userName = request.getParameter("username");
+				String password = request.getParameter("pass");
+				if(!user.auth(userName, password))
+					json.put("auth", false);
+				else
 				{
-					json.put("username", userName);
+					json.put("auth", true);
+					request.getSession().setAttribute("userID", user.me().getID());
 				}
 			}
 			
+			if(request.getParameter("accact")!=null&&"signout".equals(request.getParameter("accact"))) // logout
+			{
+				request.getSession().setAttribute("userID", null);
+				json.put("signout", true);
+			}
+			
+			// restore logon from session
+			Integer currUID = null;
+			if( (currUID = (Integer) request.getSession().getAttribute("userID"))!=null)
+			{
+				UserEntity currUsr = user.getUser(currUID);
+				if(currUsr!=null)
+				{
+					user.setCurrUser(currUsr);
+					json.put("username", currUsr.getName());
+				}
+			}
+				
 			GameEntity gam;
 			String reqOption = request.getParameter("option");
 			
@@ -142,7 +155,7 @@ public class SvcGame extends HttpServlet {
 				break;
 			case "addcomment":
 				String comm = request.getParameter("comment");
-				if(comm==null || comm.length()==0 || userName==null)
+				if(comm==null || comm.length()==0 || user.me()==null)
 					return ;
 				JSONObject jsn = new JSONObject(comm);
 				CommentEntity comment = new CommentEntity(gam, user.me(), jsn.getString("comm"));

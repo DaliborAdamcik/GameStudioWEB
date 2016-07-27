@@ -181,10 +181,10 @@ div .comment {
 
 #registerme
 {
-    background-color: #00e68a;
+    background-color: #0099ff;
     display:inline-block;
-	/*width: 15em;
-    height: 5em;*/
+	width: 32em;
+    height: 15em;
 
     position: absolute;
     top:0;

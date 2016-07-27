@@ -157,7 +157,7 @@ function studio_parse(resp) // an entry point for json DATA
 	{
 		var el = document.getElementById('gs_signin');
 		el.innerHTML = dat.username;
-		el.onclick= function () {if(confirm('Do you want log out?')) mainAjax("signout=true", studio_parse)};
+		el.onclick= function () {if(confirm('Do you want log out?')) mainAjax("accact=signout", studio_parse)};
 		document.getElementById('rate').style.display='block';
 		document.getElementById('addcoment').style.display='block';
 	}
@@ -220,12 +220,13 @@ function gs_dosignin()
 		alert("User name and password must be minimal 3 character long.");
 		return;
 	}
-	mainAjax("username="+username+'&password='+pass, studio_parse);
+	mainAjax("accact=signin&username="+username+'&pass='+pass, studio_parse);
 	gs_signin_div();
 }
 
 function gs_showregister()
 {
+	gs_signin_div();
 	var regel = document.getElementById('registerme');
 	regel.className= regel.className.replace('mfadout', '').trim();
 	regel.className+= ' mfadin';
@@ -234,6 +235,12 @@ function gs_showregister()
 	document.getElementById("gs_reg_pass2").value='';
 	gs_reg_validpass();
 	gs_reg_validnick();
+}
+
+function gs_hideregister()
+{
+	var regel = document.getElementById('registerme');
+	regel.className= regel.className.replace('mfadin', 'mfadout');
 }
 
 function gs_reg_validnick(callsend){
@@ -296,13 +303,14 @@ function gs_reg_validpass()
 
 function gs_register_send(name, password)
 {
-	mainAjax('regiSTER=do&name='+name+'&pass='+password, function(resp){
+	mainAjax('accact=register&name='+name+'&pass='+password, function(resp){
 		var json = JSON.parse(resp);
+		console.log(json);
 		if(json.regmsg==="ok")
 		{
-			var regel = document.getElementById('registerme');
-			regel.className= regel.className.replace('mfadin', 'mfadout');
-			alert("Registration is OK");
+			gs_hideregister();
+			studio_parse(resp);
+			//alert("Registration is OK");
 		}
 		else
 		alert(json.regmsg+' '+json.error);
