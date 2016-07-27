@@ -141,7 +141,7 @@ function studio_parse(resp) // an entry point for json DATA
 	{
 		var el = document.getElementById('gs_signin');
 		el.innerHTML = dat.username;
-		el.onclick= function () {mainAjax("signout=true", studio_parse)};
+		el.onclick= function () {if(confirm('Do you want log out?')) mainAjax("signout=true", studio_parse)};
 		document.getElementById('rate').style.display='block';
 		document.getElementById('addcoment').style.display='block';
 	}

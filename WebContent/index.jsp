@@ -43,7 +43,7 @@
 	</div>	
 	
 	<div id="winner" class="nicewindow"><div>You won game</div>Your score: <span id="winscore"></span></div>
-	<div id="signin" class="nicewindow">Your name: <input type="text" id="gs_user_name" /> <input type="button" value="Sign in" onclick="gs_dosignin();"/></div>
+	<div id="signin" class="nicewindow">Name: <input type="text" id="gs_user_name" /><!-- <br/>Pass: <input type="password" id="gs_user_password" /> --> <input type="button" value="Sign in" onclick="gs_dosignin();"/></div>
 	
 	<script type="text/javascript">mainAjax('option=gamelist', studio_parse);</script>
 	<!--  <script type="text/javascript">mainAjax('option=gamelist', initGameList);</script>  -->

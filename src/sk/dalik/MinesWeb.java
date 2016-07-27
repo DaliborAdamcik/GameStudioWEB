@@ -116,7 +116,6 @@ public class MinesWeb extends HttpServlet {
 				int myscore = (int) (System.currentTimeMillis() - (long) session.getAttribute("mines-time")) / 1000;
 				request.setAttribute("score", myscore);
 				json.put("score", myscore);
-				System.out.println("bebeka");
 			}
 			
 			json.put("state", field.getState().toString());
