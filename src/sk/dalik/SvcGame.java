@@ -13,6 +13,7 @@ import sk.tsystems.gamestudio.entity.CommentEntity;
 import sk.tsystems.gamestudio.entity.GameEntity;
 import sk.tsystems.gamestudio.entity.RatingEntity;
 import sk.tsystems.gamestudio.entity.ScoreEntity;
+import sk.tsystems.gamestudio.entity.UserEntity;
 import sk.tsystems.gamestudio.services.CommentService;
 import sk.tsystems.gamestudio.services.GameService;
 import sk.tsystems.gamestudio.services.RatingService;
@@ -59,7 +60,46 @@ public class SvcGame extends HttpServlet {
 				request.getSession().setAttribute("username", null);
 				json.put("signout", true);
 			}
-				
+			
+			if(request.getParameter("checknick")!=null)
+			{
+				String nick = request.getParameter("checknick").trim();
+				// TODO check with regex
+				json.put("usernonexists", user.getUser(nick)==null);
+				json.put("nick", nick);
+				return ;
+			}
+			
+			if(request.getParameter("regiSTER")!=null)
+			{
+				json.put("regmsg", "initialization failed:");
+				try
+				{
+					String nick = request.getParameter("name");
+					String pass = request.getParameter("pass");
+					
+					if(nick.length()<3)
+						json.put("regmsg", "Name is too short");
+					else
+					if(pass.length()<3)
+						json.put("regmsg", "Password is too short");
+					else
+					{ 
+						UserEntity usrik = user.addUser(nick); 
+						json.put("add", usrik!=null);
+						json.put("regmsg", usrik!=null?"ok":"fail");
+						request.getSession().setAttribute("username", nick);
+					}
+				}
+				catch(NullPointerException e)
+				{
+					json.put("error", e.getMessage());
+					return;
+				}
+			}
+
+			
+			
 			String userName = request.getParameter("username");
 			if(userName!=null)
 				request.getSession().setAttribute("username", userName);
@@ -68,8 +108,10 @@ public class SvcGame extends HttpServlet {
 			
 			if(userName!= null)
 			{
-				user.auth(userName);
-				json.put("username", userName);
+				if(user.auth(userName))
+				{
+					json.put("username", userName);
+				}
 			}
 			
 			GameEntity gam;
@@ -83,7 +125,9 @@ public class SvcGame extends HttpServlet {
 			
 			try
 			{
-				gam = game.getGame(Integer.parseInt(request.getParameter("gameID")));
+				int gameid = Integer.parseInt(request.getParameter("gameID"));
+				gam = game.getGame(gameid);
+				request.setAttribute("GameIDi", gameid);
 			}
 			catch(NumberFormatException | NullPointerException e)
 			{ return; }

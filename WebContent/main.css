@@ -12,7 +12,7 @@ input, textarea {
 	font-family: 'Oxygen', sans-serif;
 }
 
-header .title {
+.title {
 	font-family: 'Katibeh', cursive;
 	font-size: 4em;
 	color: #ff8080;
@@ -41,6 +41,15 @@ div#mainmenu
 	padding-left: 1em;
 	text-shadow: 2px 2px #595959;
 	cursor: pointer;
+}
+
+.aslink {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.aslink:hover {
+	color: red;
 }
 
 #mainmenu span:HOVER {
@@ -170,7 +179,23 @@ div .comment {
 }
 
 
-#winner {
+#registerme
+{
+    background-color: #00e68a;
+    display:inline-block;
+	/*width: 15em;
+    height: 5em;*/
+
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+} 
+
+#winner{
     background-color: #00e68a;
 	width: 15em;
     height: 5em;
@@ -197,6 +222,16 @@ div .comment {
 	top: 9em;
 }
 
+.loglab {
+	min-width: 3.3em;
+	display: inline-block;
+}
+
+#signin > input[type="button"] {
+	float: right;
+	margin-top: 0.3em;
+}
+
 #scores table {
 	border-collapse: collapse;
 	margin-bottom: 0.5em;
@@ -217,7 +252,5 @@ div .comment {
 	text-shadow: 0.05em 0.05em silver;
 	padding: 0 0.5em;
 }
-
-
 
 

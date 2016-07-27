@@ -43,9 +43,22 @@
 	</div>	
 	
 	<div id="winner" class="nicewindow"><div>You won game</div>Your score: <span id="winscore"></span></div>
-	<div id="signin" class="nicewindow">Name: <input type="text" id="gs_user_name" /><!-- <br/>Pass: <input type="password" id="gs_user_password" /> --> <input type="button" value="Sign in" onclick="gs_dosignin();"/></div>
+	<div id="signin" class="nicewindow"><span class="loglab">Name:</span><input type="text" id="gs_user_name" />
+	<br/><span class="loglab">Pass:</span><input type="password" id="gs_user_password" /><br/>
+	<span class="aslink" onclick="gs_showregister();">Register me!</span>
+	<input type="button" value="Sign in" onclick="gs_dosignin();"/></div>
+
+	<div id="registerme" class="nicewindow">
+		<span class="title">Game studio registration</span><br/>
+		<table>
+			<tr><td>Your name:</td><td><input type="text" id="gs_reg_name" onkeyup="gs_reg_validnick();" /></td><td><img src="img/err.png" id="val_nick" alt="bee" /></td></tr>
+			<tr><td>Password:</td><td><input type="password" id="gs_reg_pass1" onkeyup="gs_reg_validpass();" /></td><td><img src="img/err.png" id="val_pass" alt="bee" /></td></tr>
+			<tr><td>Retype password:</td><td><input type="password" id="gs_reg_pass2" onkeyup="gs_reg_validpass();" /></td></tr>
+			<tr><td>&nbsp;</td><td></td></tr>
+			<tr><td></td><td><input type="button" onclick="gs_doregister();" value="Register me"></td></tr>
+		</table>
+	</div>
 	
 	<script type="text/javascript">mainAjax('option=gamelist', studio_parse);</script>
-	<!--  <script type="text/javascript">mainAjax('option=gamelist', initGameList);</script>  -->
 </body>
 </html>
