@@ -125,7 +125,7 @@ function studio_parse(resp) // an entry point for json DATA
 		var el = document.getElementById("winner");
 		el.className = el.className.replace('mfadeio', '').trim();
 		document.getElementById("winscore").innerHTML = dat.score;
-		el.className+=' mfadeio';
+		setTimeout(function() {document.getElementById("winner").className+=' mfadeio';}, 500);
 		gs_showComment();
 	}
 	
@@ -217,5 +217,4 @@ function gs_ratdo(own)
 {
 	var si = Math.ceil((parseInt(document.getElementById('ratte').style.width) / own.clientWidth)*5);
 	mainAjax('gameID='+activegame+'&option=addrate&rate='+si, studio_parse);
-	//console.log(si);
 }

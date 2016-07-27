@@ -110,7 +110,7 @@ public class SvcGame extends HttpServlet {
 				Integer scr = (Integer) request.getAttribute("score");   
 				if(scr!=null && user.me()!=null)
 				{
-					ScoreEntity scoo = new ScoreEntity(gam, null, scr);
+					ScoreEntity scoo = new ScoreEntity(gam, user.me(), scr);
 					score.addScore(scoo);
 				}
 				break;

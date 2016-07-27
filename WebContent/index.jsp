@@ -4,7 +4,6 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
-	<meta charset="windows-1250">
 	<title>GameStudio</title>
 
 	<link rel="stylesheet" type="text/css" href="mines.css">
@@ -27,7 +26,7 @@
 			<div id="gamecontent">Welcome in GameStudio. Please, select game from menu. Enjoy FUN!</div>
 		</div>
 		<div id="gameattrib">
-			<div title="Game rating" class="rating"><div id="ratinggold" class="ratinggold"></div></div>
+			Game rating: <div title="Game rating" class="rating"><div id="ratinggold" class="ratinggold"></div></div>
 			<div id="rate">
 				Rate me!
 				<div class="rating" title="Rate this game" onmousemove="gs_ratmousover(event, this);" onclick="gs_ratdo(this);"><div id="ratte" class="ratinggold"></div></div>
@@ -43,7 +42,6 @@
 		</div>
 	</div>	
 	
-	<div id="loader"><img src="img/loader.gif" alt="loader" /></div>
 	<div id="winner" class="nicewindow"><div>You won game</div>Your score: <span id="winscore"></span></div>
 	<div id="signin" class="nicewindow">Your name: <input type="text" id="gs_user_name" /> <input type="button" value="Sign in" onclick="gs_dosignin();"/></div>
 	

@@ -1,4 +1,4 @@
-@CHARSET "UTF-8";
+@charset "UTF-8";
 
 @import 'https://fonts.googleapis.com/css?family=Katibeh';
 @import 'https://fonts.googleapis.com/css?family=Oxygen';
@@ -140,7 +140,6 @@ div .comment {
 .mfadeio { /* for YOU WON */ 
 	animation: mainfadeio 6s;
 	animation-fill-mode: forwards;
-	animation-play-state: running;
 }
 
 @keyframes mainfadeio { /* for YOU WON */
