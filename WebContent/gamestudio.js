@@ -70,7 +70,7 @@ function gs_showComment()
 
 function gs_replycount(data)
 {
-	var regex = /<!--ic:(\d)+-->/g;
+	var regex = /<!--ic:(\d+)-->/g;
 	var res = regex.exec(data); 
 	if(res==null)
 		return 0;
@@ -123,27 +123,37 @@ function studio_parse(resp) // an entry point for json DATA
 	if(dat.won)
 	{
 		var el = document.getElementById("winner");
-		el.style.visibility = 'visible';
-		el.style.opacity = '1';
-		setTimeout(function (){	document.getElementById("winner").style.opacity = '0'; }, 3000);
-		setTimeout(function (){	document.getElementById("winner").style.visibility = 'hidden';}, 5000);
+		el.className = el.className.replace('mfadeio', '').trim();
 		document.getElementById("winscore").innerHTML = dat.score;
+		el.className+=' mfadeio';
+		gs_showComment();
 	}
 	
 	if(dat.gamerating)
-		gs_setrate(dat.gamerating);
+		gs_setrate(dat.gamerating, 'ratinggold');
 	
-	//dat.myrating
+	if(dat.myrating)
+		gs_setrate(dat.myrating, 'ratte');
+	else
+		gs_setrate(0, 'ratte');
 	
 	if(dat.username)
 	{
 		var el = document.getElementById('gs_signin');
 		el.innerHTML = dat.username;
-		el.onclick= function () {};
+		el.onclick= function () {mainAjax("signout=true", studio_parse)};
 		document.getElementById('rate').style.display='block';
 		document.getElementById('addcoment').style.display='block';
-	}//TODO signed out?
-	
+	}
+
+	if(dat.signout)	
+	{
+		var el = document.getElementById('gs_signin');
+		el.innerHTML = "Sign IN";
+		el.onclick= function () { gs_signin_div(); };
+		document.getElementById('rate').style.display='none';
+		document.getElementById('addcoment').style.display='none';
+	}
 }
 
 function gs_addComment(comme)
@@ -157,12 +167,7 @@ function gs_addComment(comme)
 	})
 }
 
-function gs_rate(num)
-{
-	mainAjax('gameID='+activegame+'&option=addrate&rate='+num, studio_parse);
-}
-
-function gs_setrate(rate)
+function gs_setrate(rate, objid)
 {
 	var stars = parseFloat(rate);
 	if(stars==='NaN')
@@ -170,22 +175,24 @@ function gs_setrate(rate)
 	
 	stars*= 32;
 	stars = Math.round(stars);
-	document.getElementById('ratinggold').style.width= stars+'px';
+	document.getElementById(objid).style.width= stars+'px';
 }
 
-function gs_signin_div(own)
+function gs_signin_div()
 {
 	var sig =document.getElementById("signin");
-	if(sig.style.opacity > 0)
+
+	if(sig.className.search('mfadout')<0 && sig.className.search('mfadin')<0)
 	{
-		sig.style.opacity = '0'; 
-		setTimeout(function (){	sig.style.visibility = 'hidden';}, 5000);
+		sig.className+= ' mfadin';
+		return;
 	}
+
+	
+	if(sig.className.search('mfadout')<0)
+		sig.className = sig.className.replace('mfadin', 'mfadout');
 	else
-	{
-		sig.style.visibility = 'visible';
-		sig.style.opacity = '1'; 
-	}		
+		sig.className = sig.className.replace('mfadout', 'mfadin');
 }
 
 function gs_dosignin()
@@ -198,4 +205,17 @@ function gs_dosignin()
 	}
 	mainAjax("username="+username, studio_parse);
 	gs_signin_div();
+}
+
+function gs_ratmousover(eve, own)
+{
+	var cusize = eve.clientX - own.offsetLeft; 
+	document.getElementById('ratte').style.width = cusize+'px';
+}
+
+function gs_ratdo(own)
+{
+	var si = Math.ceil((parseInt(document.getElementById('ratte').style.width) / own.clientWidth)*5);
+	mainAjax('gameID='+activegame+'&option=addrate&rate='+si, studio_parse);
+	//console.log(si);
 }

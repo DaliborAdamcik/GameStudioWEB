@@ -27,14 +27,10 @@
 			<div id="gamecontent">Welcome in GameStudio. Please, select game from menu. Enjoy FUN!</div>
 		</div>
 		<div id="gameattrib">
-			<div id="rating" title="Game rating"><div id="ratinggold"></div></div>
+			<div title="Game rating" class="rating"><div id="ratinggold" class="ratinggold"></div></div>
 			<div id="rate">
 				Rate me!
-				<img src="img/star.png" onclick="gs_rate(1);" alt="star">
-				<img src="img/star.png" onclick="gs_rate(2);" alt="star">
-				<img src="img/star.png" onclick="gs_rate(3);" alt="star">
-				<img src="img/star.png" onclick="gs_rate(4);" alt="star">
-				<img src="img/star.png" onclick="gs_rate(5);" alt="star">
+				<div class="rating" title="Rate this game" onmousemove="gs_ratmousover(event, this);" onclick="gs_ratdo(this);"><div id="ratte" class="ratinggold"></div></div>
 			</div>
 
 			<div id="scores"></div>

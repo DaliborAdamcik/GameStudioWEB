@@ -54,6 +54,12 @@ public class SvcGame extends HttpServlet {
 				RatingService rating = new sk.tsystems.gamestudio.services.jpa.RatingSvc();*/
 		)
 		{
+			if(request.getParameter("signout")!=null)
+			{
+				request.getSession().setAttribute("username", null);
+				json.put("signout", true);
+			}
+				
 			String userName = request.getParameter("username");
 			if(userName!=null)
 				request.getSession().setAttribute("username", userName);
@@ -123,6 +129,7 @@ public class SvcGame extends HttpServlet {
 				break;
 			}
 		} catch (Exception e) {
+			json.put("error", "Error during servlet execurion:"+e.getMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
