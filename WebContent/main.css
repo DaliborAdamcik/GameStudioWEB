@@ -57,10 +57,6 @@ div#mainmenu
 	text-shadow: 2px 2px #000099;
 }
 
-span#gs_signin {
-	float: right;
-}
-
 div .comment {
 	border-bottom: 1px solid silver;
 	margin-bottom: 0.3em;
@@ -213,7 +209,7 @@ div .comment {
 	font-size: 2em;
 }
 
-#signin {
+#signindlg {
 	background-color: #bfbfbf;
 	min-width: 2em;
 	display: inline-block;
@@ -222,14 +218,18 @@ div .comment {
 	top: 9em;
 }
 
+span#gs_signin { /* sign in button in menu */
+	float: right;
+}
+
+#signin > div input[type="button"] {
+	float: right;
+	margin-top: 0.3em;
+}
+
 .loglab {
 	min-width: 3.3em;
 	display: inline-block;
-}
-
-#signin > input[type="button"] {
-	float: right;
-	margin-top: 0.3em;
 }
 
 #scores table {

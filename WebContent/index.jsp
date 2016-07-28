@@ -12,6 +12,7 @@
 	<script type='text/javascript' src='js/gamestudio.js'></script>
 	<script type='text/javascript' src='js/register.js'></script>
 	<script type='text/javascript' src='js/services.js'></script>
+	<script type='text/javascript' src='js/signin.js'></script>
 	
 	<script type='text/javascript' src='stones.js'></script>
 	<script type='text/javascript' src='mines.js'></script>
@@ -46,10 +47,26 @@
 	</div>	
 	
 	<div id="winner" class="nicewindow"><div>You won game</div>Your score: <span id="winscore"></span></div>
-	<div id="signin" class="nicewindow"><span class="loglab">Name:</span><input type="text" id="gs_user_name" />
-	<br/><span class="loglab">Pass:</span><input type="password" id="gs_user_password" /><br/>
-	<span class="aslink" onclick="gs_showregister();">Register me!</span>
-	<input type="button" value="Sign in" onclick="gs_dosignin();"/></div>
+	<div id="signindlg" class="nicewindow">
+		<div id="signindlg_do">
+			<span class="loglab">Name:</span><input type="text" id="gs_user_name" /><br/>
+			<span class="loglab">Pass:</span><input type="password" id="gs_user_password" /><br/>
+			<span class="aslink" onclick="gs_showregister();">Register me!</span>
+			<input type="button" value="Sign in" onclick="gs_dosignin();"/>
+		</div>
+		<div id="signindlg_ins">
+			<span class="aslink" onclick="gs_dosignout();">Sign out...</span><br/>
+			<hr/>
+			<span class="aslink" onclick="gs_signin_dlgopen(true);">Change password</span>
+		</div>
+		<div id="signindlg_pass">
+			<span class="loglab">Old password:</span><input type="password" id="gs_oldpass" /><br/>
+			<span class="loglab">New password:</span><input type="password" id="gs_newpass1" /><br/>
+			<span class="loglab">Retype pass:</span><input type="password" id="gs_newpass2" /><br/>
+			<input type="button" value="Change password" onclick="gs_dochangepass();"/>
+			<span class="aslink" onclick="gs_signin_showdlg();">Cancel</span>
+		</div>
+	</div><!-- signindlg -->
 
 	<div id="registerme" class="nicewindow">
 		<span class="title">Game studio registration</span><br/>

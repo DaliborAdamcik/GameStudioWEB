@@ -52,9 +52,8 @@ public class SvcGame extends HttpServlet {
 			return;
 		}
 		
-		
 		JSONObject json = new JSONObject();
-		request.setAttribute("json", json);
+		request.setAttribute("json", json); // global json share for servlets
 		boolean purecode = false;
 		try
 		(
@@ -79,57 +78,6 @@ public class SvcGame extends HttpServlet {
 				return ;
 			}
 			
-			if(request.getParameter("accact")!=null&&"register".equals(request.getParameter("accact")))
-			{
-				json.put("regmsg", "initialization failed:");
-				try
-				{
-					String nick = request.getParameter("name");
-					String pass = request.getParameter("pass");
-					
-					if(nick.length()<3)
-						json.put("regmsg", "Name is too short");
-					else
-					if(pass.length()<3)
-						json.put("regmsg", "Password is too short");
-					else
-					{ 
-						UserEntity usrik = user.addUser(nick); 
-						usrik.setPassword(pass);
-						if(!user.updateUser(usrik))
-							json.put("error", "error setting password");
-							
-						json.put("add", usrik!=null);
-						json.put("regmsg", usrik!=null?"ok":"fail");
-						request.getSession().setAttribute("userID", usrik.getID());
-					}
-				}
-				catch(NullPointerException e)
-				{
-					json.put("error", e.getMessage());
-					return;
-				}
-			}
-
-			if(request.getParameter("accact")!=null&&"signin".equals(request.getParameter("accact")))
-			{
-				String userName = request.getParameter("username");
-				String password = request.getParameter("pass");
-				if(!user.auth(userName, password))
-					json.put("auth", false);
-				else
-				{
-					json.put("auth", true);
-					request.getSession().setAttribute("userID", user.me().getID());
-				}
-			}
-			
-			if(request.getParameter("accact")!=null&&"signout".equals(request.getParameter("accact"))) // logout
-			{
-				request.getSession().setAttribute("userID", null);
-				json.put("signout", true);
-			}
-			
 			// restore logon from session
 			Integer currUID = null;
 			if( (currUID = (Integer) request.getSession().getAttribute("userID"))!=null)
@@ -141,7 +89,14 @@ public class SvcGame extends HttpServlet {
 					json.put("username", currUsr.getName());
 				}
 			}
-				
+			
+			if(request.getParameter("accact")!=null)
+			{
+				accounting(request, json, user);
+				return;
+			}
+
+			
 			GameEntity gam;
 			String reqOption = request.getParameter("option");
 			
@@ -177,7 +132,10 @@ public class SvcGame extends HttpServlet {
 				comme.addComment(comment);
 				//response.getWriter().println("OK "+comment.getID());
 				break;
-			case "play":
+			case "play": 
+				JSONObject child = new JSONObject(); // game must use separate json
+				request.setAttribute("json", child);
+
 				request.getRequestDispatcher(gam.getServletPath()).include(request, response);
 				Integer scr = (Integer) request.getAttribute("score");   
 				if(scr!=null && user.me()!=null)
@@ -185,13 +143,15 @@ public class SvcGame extends HttpServlet {
 					ScoreEntity scoo = new ScoreEntity(gam, user.me(), scr);
 					score.addScore(scoo);
 				}
+				json.put("gameout", child);
+				request.setAttribute("json", json); // restore main json
 				break;
 
 			case "addrate":
 				try {
 					int ratt = Integer.parseInt(request.getParameter("rate"));
 					if(user.me()!=null)
-						rating.addRating(new RatingEntity(gam, null, ratt));
+						rating.addRating(new RatingEntity(gam, user.me(), ratt));
 				} catch (NumberFormatException | NullPointerException e) {}
 			case "getrate":
 				json.put("rating", getRating(gam, user.me(), rating));
@@ -216,6 +176,114 @@ public class SvcGame extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	private void accounting(HttpServletRequest request, JSONObject jsonm, UserService user)
+	{
+		JSONObject jsona = new JSONObject();
+		String action = request.getParameter("accact"); 
+		if(action==null)
+			action = "unknown";
+		
+		try
+		{
+			jsona.put("result", false); // globally is not OK
+			jsona.put("message", "empty");
+			jsona.put("action", action);
+
+			String name = request.getParameter("username");
+			String pass = request.getParameter("pass");
+			String newpass = request.getParameter("new");
+			
+			if("signout".equals(action)) // logout
+			{
+				request.getSession().setAttribute("userID", null);
+				user.setCurrUser(null);
+				jsona.put("result", true);
+				return;
+			}
+			
+			if("register".equals(action))
+			{
+				jsona.put("message", "Registration failed");
+				try
+				{
+					if(name.length()<3)
+						jsona.put("message", "Name is too short");
+					else
+					if(pass.length()<3)
+						jsona.put("message", "Password is too short");
+					else
+					{ 
+						UserEntity usrik = user.addUser(name); 
+						usrik.setPassword(pass);
+						if(!user.updateUser(usrik))
+							jsona.put("message", "Error setting new password"); // TODO what do do??
+							
+						jsona.put("message", usrik!=null?"ok":"fail");
+						request.getSession().setAttribute("userID", usrik.getID());
+						user.setCurrUser(usrik);
+						jsona.put("result", usrik!=null);
+					}
+				}
+				catch(NullPointerException e)
+				{
+					jsonm.put("error", e.getMessage());
+				}
+				return;
+			}
+
+			if("signin".equals(request.getParameter("accact")))
+			{
+				if(!user.auth(name, pass))
+					jsona.put("message", "Bad name or password");
+				else
+				{
+					request.getSession().setAttribute("userID", user.me().getID());
+					jsona.put("result", true);
+				}
+				return;
+			}
+			else
+			if("newpass".equals(action))
+			{
+				if(user.me()==null) // we must be signed in
+				{
+					jsona.put("message", "To change password, you must be signed in first");
+					return;
+				}
+				
+				if(user.me().getPassword().compareTo(pass)!=0)
+				{
+					jsona.put("message", "Bad old password.");
+					return;
+				}
+
+				if(newpass.length()<3)
+				{
+					jsona.put("message", "New password is too short.");
+					return;
+				}
+					
+				user.me().setPassword(newpass);
+				jsona.put("message", "error setting password");
+				if(user.updateUser(user.me()))
+				{
+					jsona.put("message", "error setting password");
+					jsona.put("result", true);
+				}
+				return;
+			}
+		}
+		finally {
+			if(user.me()!=null)
+				jsona.put("username", user.me().getName());
+				
+			jsona.put("signed", user.me()!=null);
+			
+			jsonm.put("auth", jsona);
+		}
+		
 	}
 	
 	private JSONObject getRating(GameEntity gam, UserEntity me, RatingService rating)

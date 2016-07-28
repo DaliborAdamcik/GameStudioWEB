@@ -1,6 +1,6 @@
 function gs_showregister()
 {
-	gs_signin_div();
+	gs_signin_showdlg();
 	var regel = document.getElementById('registerme');
 	regel.className= regel.className.replace('mfadout', '').trim();
 	regel.className+= ' mfadin';
@@ -77,18 +77,7 @@ function gs_reg_validpass()
 
 function gs_register_send(name, password)
 {
-	mainAjax('accact=register&name='+name+'&pass='+password, function(resp){
-		var json = JSON.parse(resp);
-		console.log(json);
-		if(json.regmsg==="ok")
-		{
-			gs_hideregister();
-			studio_parse(resp);
-			//alert("Registration is OK");
-		}
-		else
-		alert(json.regmsg+' '+json.error);
-	});
+	mainAjax('accact=register&username='+name+'&pass='+password, studio_parse);
 }
 
 function gs_doregister()

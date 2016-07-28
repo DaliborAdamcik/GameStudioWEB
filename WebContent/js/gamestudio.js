@@ -1,6 +1,7 @@
 var activegame = null;
 var prevdiv = null;
 
+
 function mainAjax(params, callback) { callAjax('SvcGame', params, callback); }
 function guessAjax(params) { callAjax('SvcGame', 'gameID='+activegame+'&option=play&'+params, studio_parse); }
 function stonesAjax(params) { 	guessAjax(params); }
@@ -31,7 +32,7 @@ function initGameList(gamelist)
 	});// foreach
 
 	menu+='<span onclick="gs_showstatistics();">Statistics</span> ';
-	menu+='<span id="gs_signin" onclick="gs_signin_div();">Sign IN</span> ';
+	menu+='<span id="gs_signin" onclick="gs_signin_showdlg();">Sign IN</span> ';
 	
 	document.getElementById('mainmenu').innerHTML= menu;
 	gs_showstatistics();
@@ -118,84 +119,44 @@ function studio_parse(resp) // an entry point for json DATA
 	
 	if(dat.error)
 	{
-		alert('error: '+dat.error);
 		console.log('error: '+dat.error);
+		alert('error: '+dat.error);
 	}
+
+	if(dat.auth)
+		gs_signin(dat.auth);
 	
 	if(dat.gamelist)
 		initGameList(dat.gamelist);
 	
-	if(dat.game) // game logic run
-	{
-		var runner = 'action_game_'+activegame;
-		try {
-			window[runner](dat); 
-		}
-		catch(err) {
-		    alert('An error ocured executing game "'+dat.game+'":\nLoader: '+runner+'\nMessage: '+err.message);
-		}
-	}
-
-	if(dat.won)
-	{
-		var el = document.getElementById("winner");
-		el.className = el.className.replace('mfadeio', '').trim();
-		document.getElementById("winscore").innerHTML = dat.score;
-		setTimeout(function() {document.getElementById("winner").className+=' mfadeio';}, 500);
-		gs_showComment();
-	}
+	if(dat.gameout) // game logic run
+		gs_gamelogicmain(dat.gameout);
 	
 	if(dat.rating) // OK
 	{
 		gs_setrate(dat.rating.game, 'ratinggold');
 		gs_setrate(dat.rating.user?dat.rating.user:0, 'ratte');
 	}
-	
-	if(dat.username)
-	{
-		var el = document.getElementById('gs_signin');
-		el.innerHTML = dat.username;
-		el.onclick= function () {if(confirm('Do you want log out?')) mainAjax("accact=signout", studio_parse)};
-		document.getElementById('rate').style.display='block';
-		document.getElementById('addcoment').style.display='block';
-	}
-
-	if(dat.signout)	
-	{
-		var el = document.getElementById('gs_signin');
-		el.innerHTML = "Sign IN";
-		el.onclick= function () { gs_signin_div(); };
-		document.getElementById('rate').style.display='none';
-		document.getElementById('addcoment').style.display='none';
-	}
 }
 
-function gs_signin_div()
+function gs_gamelogicmain(gamedata) // put data to game js, estimate won / loose game
 {
-	var sig =document.getElementById("signin");
-
-	if(sig.className.search('mfadout')<0 && sig.className.search('mfadin')<0)
-	{
-		sig.className+= ' mfadin';
-		return;
+	var runner = 'action_game_'+activegame; // dynamically load game javascript
+	try {
+		window[runner](gamedata); // put data to game js
+	}
+	catch(err) {
+		var errmsg = 'An error ocured executing game "'+gamedata.game+'":\nLoader: '+runner+'\nMessage: '+err.message;
+		console.error(errmsg);
+	    alert(errmsg);
 	}
 
-	
-	if(sig.className.search('mfadout')<0)
-		sig.className = sig.className.replace('mfadin', 'mfadout');
-	else
-		sig.className = sig.className.replace('mfadout', 'mfadin');
-}
-
-function gs_dosignin()
-{
-	var username = document.getElementById("gs_user_name").value.trim();
-	var pass = document.getElementById("gs_user_password").value.trim();
-	if(username.length<3 || pass.length<3)
+	if(gamedata.won) // we won game
 	{
-		alert("User name and password must be minimal 3 character long.");
-		return;
+		var el = document.getElementById("winner"); // show won message
+		el.className = el.className.replace('mfadeio', '').trim();
+		document.getElementById("winscore").innerHTML = gamedata.score;
+		setTimeout(function() {document.getElementById("winner").className+=' mfadeio';}, 500); 
+		gs_showComment(); // reload commnts and top score
 	}
-	mainAjax("accact=signin&username="+username+'&pass='+pass, studio_parse);
-	gs_signin_div();
 }
