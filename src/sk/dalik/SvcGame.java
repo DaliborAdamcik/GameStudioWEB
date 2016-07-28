@@ -19,6 +19,7 @@ import sk.tsystems.gamestudio.services.GameService;
 import sk.tsystems.gamestudio.services.RatingService;
 import sk.tsystems.gamestudio.services.ScoreService;
 import sk.tsystems.gamestudio.services.UserService;
+import sk.tsystems.gamestudio.services.jdbc.StatisticsDTO;
 
 /**
  * Servlet implementation class SvcGameStud
@@ -38,6 +39,20 @@ public class SvcGame extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(request.getParameter("stats")!=null && "show".equals(request.getParameter("stats"))) // get DBO stat
+		{
+			StatisticsDTO stats;
+			try {
+				stats = new StatisticsDTO();
+				request.setAttribute("stats", stats);
+				request.getRequestDispatcher("/WEB-INF/jsp/Stats.jsp").forward(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+			return;
+		}
+		
+		
 		JSONObject json = new JSONObject();
 		request.setAttribute("json", json);
 		boolean purecode = false;
