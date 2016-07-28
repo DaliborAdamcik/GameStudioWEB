@@ -1,4 +1,3 @@
-//var masterURL='';
 var activegame = null;
 var prevdiv = null;
 
@@ -7,15 +6,11 @@ function guessAjax(params) { callAjax('SvcGame', 'gameID='+activegame+'&option=p
 function stonesAjax(params) { 	guessAjax(params); }
 function minesAjax(params) { 	guessAjax(params); }
 
-function initGameList(resp)
+function initGameList(gamelist)
 {
-	var gamelist;
-	gamelist = resp ;//= JSON.parse(resp);
-	//console.log(gamelist);
 	var menu = '';
-	var newgames = '';
 	
-	gamelist.gamelist.forEach(function (game) {
+	gamelist.forEach(function (game) {
 		menu+='<span onclick="menuItemClick('+game.ID+');" id="mgi_'+game.ID+'">'+game.name+'</span> ';
 		
 		callAjaxF('SvcGame?gameID='+game.ID+'&option=play', '', 
@@ -31,35 +26,30 @@ function initGameList(resp)
 			        document.body.appendChild(runscript);
 				}
 				else
-					console.log('no runnable set for '+game.ID);
-			}, 'GET');
+					console.error('no runnable set for game id# '+game.ID);
+			}, 'GET'); // ajax
+	});// foreach
 
-		
-		var runner = 'action_game_'+game.ID;
-
-		//console.log(runner + " "+(window[runner]) );
-		/*if (typeof window[runner] != "undefined") { 
-			
-		}*/
-		
-	});
-
+	menu+='<span onclick="gs_showstatistics();">Statistics</span> ';
 	menu+='<span id="gs_signin" onclick="gs_signin_div();">Sign IN</span> ';
 	
-	console.log(newgames);
 	document.getElementById('mainmenu').innerHTML= menu;
-	
+	gs_showstatistics();
+}
+
+function gs_showstatistics()
+{
 	mainAjax('stats=show', 
 		function (ares){
-			document.getElementById('gamecontent').innerHTML+= ares;
-		});
+			document.getElementById('gamecontent').innerHTML= ares;
+	});	
 }
 
 function menuItemClick(gID)
 {
-	document.getElementById('gamecontent').innerHTML = "";
+	document.getElementById('gamecontent').innerHTML = '';
 	
-	mainAjax('gameID='+gID+'&option=getrate', studio_parse);
+	mainAjax('gameID='+gID+'&option=getrate', studio_parse); // get rating for game 
 
 	// change menu
 	if(activegame!= null)
@@ -101,7 +91,7 @@ function gs_showComment()
 	})
 }
 
-function gs_replycount(data)
+function gs_replycount(data) 
 {
 	var regex = /<!--ic:(\d+)-->/g;
 	var res = regex.exec(data); 
@@ -124,7 +114,7 @@ function showdiv(divid)
 function studio_parse(resp) // an entry point for json DATA
 {
 	var dat = JSON.parse(resp);
-	console.log(dat);
+	console.log('studio_parse received: ', dat);
 	
 	if(dat.error)
 	{
@@ -133,7 +123,7 @@ function studio_parse(resp) // an entry point for json DATA
 	}
 	
 	if(dat.gamelist)
-		initGameList(dat);
+		initGameList(dat.gamelist);
 	
 	if(dat.game) // game logic run
 	{
@@ -155,13 +145,11 @@ function studio_parse(resp) // an entry point for json DATA
 		gs_showComment();
 	}
 	
-	if(dat.gamerating)
-		gs_setrate(dat.gamerating, 'ratinggold');
-	
-	if(dat.myrating)
-		gs_setrate(dat.myrating, 'ratte');
-	else
-		gs_setrate(0, 'ratte');
+	if(dat.rating) // OK
+	{
+		gs_setrate(dat.rating.game, 'ratinggold');
+		gs_setrate(dat.rating.user?dat.rating.user:0, 'ratte');
+	}
 	
 	if(dat.username)
 	{
@@ -180,28 +168,6 @@ function studio_parse(resp) // an entry point for json DATA
 		document.getElementById('rate').style.display='none';
 		document.getElementById('addcoment').style.display='none';
 	}
-}
-
-function gs_addComment(comme)
-{
-	// validate comment here
-	var comval = { };
-	comval.comm = comme.value;
-	mainAjax('gameID='+activegame+'&option=addcomment&comment='+JSON.stringify(comval), function (comms){
-		comme.value='';
-		gs_showComment();
-	})
-}
-
-function gs_setrate(rate, objid)
-{
-	var stars = parseFloat(rate);
-	if(stars==='NaN')
-		stars = 0;
-	
-	stars*= 32;
-	stars = Math.round(stars);
-	document.getElementById(objid).style.width= stars+'px';
 }
 
 function gs_signin_div()
@@ -232,118 +198,4 @@ function gs_dosignin()
 	}
 	mainAjax("accact=signin&username="+username+'&pass='+pass, studio_parse);
 	gs_signin_div();
-}
-
-function gs_showregister()
-{
-	gs_signin_div();
-	var regel = document.getElementById('registerme');
-	regel.className= regel.className.replace('mfadout', '').trim();
-	regel.className+= ' mfadin';
-	document.getElementById("gs_reg_name").value='';	
-	document.getElementById("gs_reg_pass1").value='';
-	document.getElementById("gs_reg_pass2").value='';
-	gs_reg_validpass();
-	gs_reg_validnick();
-}
-
-function gs_hideregister()
-{
-	var regel = document.getElementById('registerme');
-	regel.className= regel.className.replace('mfadin', 'mfadout');
-}
-
-function gs_reg_validnick(callsend){
-
-	var img = document.getElementById("val_nick");
-	var usr = document.getElementById("gs_reg_name").value.trim();	
-	
-	if(usr.length<3)
-	{
-		img.title= "Name must be minimal 3 characters long";
-		img.src="img/err.png";
-		return false;
-	}
-
-	img.title= "Checking name... please wait";
-	img.src="img/loader.gif";
-	
-	mainAjax('checknick='+usr, function(resp){
-		var jsn = JSON.parse(resp);
-		console.log(jsn);
-		if(jsn.usernonexists)
-		{
-			img.src="img/ok.png";
-			img.title= "NickName is OK";
-			if(callsend)
-				gs_register_send(jsn.nick, callsend);
-		}
-		else
-		{
-			img.title= "Nick already exists, please type new one";
-			img.src="img/err.png";
-		}
-	});
-}
-
-function gs_reg_validpass()
-{
-	var img = document.getElementById("val_pass");
-	
-	var pass1 = document.getElementById("gs_reg_pass1").value.trim();
-	var pass2 = document.getElementById("gs_reg_pass2").value.trim();
-	
-	if(pass1.length<3 || pass2.length<3)
-	{
-		img.title= "Password must be minimal 3 chars long";
-		img.src="img/err.png";
-		return false;
-	}
-	
-	if(pass1 != pass2)
-	{
-		img.title= "Password and his retype is not same";
-		img.src="img/err.png";
-		return false;
-	}
-	img.src="img/ok.png";
-	img.title= "Passwords is ok";
-	return true;
-}
-
-function gs_register_send(name, password)
-{
-	mainAjax('accact=register&name='+name+'&pass='+password, function(resp){
-		var json = JSON.parse(resp);
-		console.log(json);
-		if(json.regmsg==="ok")
-		{
-			gs_hideregister();
-			studio_parse(resp);
-			//alert("Registration is OK");
-		}
-		else
-		alert(json.regmsg+' '+json.error);
-	});
-}
-
-function gs_doregister()
-{
-	if(!gs_reg_validpass())
-		return;
-	
-	gs_reg_validnick(document.getElementById("gs_reg_pass1").value.trim());
-}
-
-
-function gs_ratmousover(eve, own)
-{
-	var cusize = eve.clientX - own.offsetLeft; 
-	document.getElementById('ratte').style.width = cusize+'px';
-}
-
-function gs_ratdo(own)
-{
-	var si = Math.ceil((parseInt(document.getElementById('ratte').style.width) / own.clientWidth)*5);
-	mainAjax('gameID='+activegame+'&option=addrate&rate='+si, studio_parse);
 }

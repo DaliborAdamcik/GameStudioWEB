@@ -8,8 +8,11 @@
 
 	<link rel="stylesheet" type="text/css" href="mines.css">
 	<link rel="stylesheet" type="text/css" href="main.css">
-	<script type='text/javascript' src='ajax.js'></script>
-	<script type='text/javascript' src='gamestudio.js'></script>
+	<script type='text/javascript' src='js/ajax.js'></script>
+	<script type='text/javascript' src='js/gamestudio.js'></script>
+	<script type='text/javascript' src='js/register.js'></script>
+	<script type='text/javascript' src='js/services.js'></script>
+	
 	<script type='text/javascript' src='stones.js'></script>
 	<script type='text/javascript' src='mines.js'></script>
 	<script type='text/javascript' src='guess.js'></script>

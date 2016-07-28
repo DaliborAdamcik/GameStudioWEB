@@ -194,11 +194,7 @@ public class SvcGame extends HttpServlet {
 						rating.addRating(new RatingEntity(gam, null, ratt));
 				} catch (NumberFormatException | NullPointerException e) {}
 			case "getrate":
-				json.put("gamerating", rating.gameRating(gam));
-				RatingEntity rat;
-				if(user.me()!=null && (rat = rating.myRating(gam, user.me()))!=null )
-					json.put("myrating",rat.getRating());
-				break;
+				json.put("rating", getRating(gam, user.me(), rating));
 			}
 		} catch (Exception e) {
 			json.put("error", "Error during servlet execurion:"+e.getMessage());
@@ -220,5 +216,17 @@ public class SvcGame extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	private JSONObject getRating(GameEntity gam, UserEntity me, RatingService rating)
+	{
+		JSONObject json = new JSONObject();
+		json.put("game", rating.gameRating(gam));
+		
+		RatingEntity rat;
+		if(me!=null && (rat = rating.myRating(gam, me))!=null)
+			json.put("user",rat.getRating());
+		
+		return json;
 	}
 }
