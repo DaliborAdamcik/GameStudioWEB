@@ -253,4 +253,15 @@ div .comment {
 	padding: 0 0.5em;
 }
 
+#stats > table {
+	border-collapse: collapse;
+	/*border: 0.2em solid black;*/
+}
+
+#stats td, #stats th {
+	border: 0.1em solid black;
+	border-right-width: 0.2em;
+	padding: 0.3em;
+}
+
 

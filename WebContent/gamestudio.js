@@ -32,7 +32,6 @@ function initGameList(resp)
 				}
 				else
 					console.log('no runnable set'+game.ID);
-				
 			}, 'GET');
 	})
 
@@ -40,6 +39,11 @@ function initGameList(resp)
 	
 	console.log(newgames);
 	document.getElementById('mainmenu').innerHTML= menu;
+	
+	mainAjax('stats=show', 
+		function (ares){
+			document.getElementById('gamecontent').innerHTML+= ares;
+		});
 }
 
 function menuItemClick(gID)

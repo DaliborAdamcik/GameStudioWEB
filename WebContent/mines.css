@@ -1,4 +1,4 @@
-@CHARSET "UTF-8";
+@charset "UTF-8";
 
 @import 'https://fonts.googleapis.com/css?family=Lobster';
 
@@ -18,7 +18,7 @@
     background: url('img/tiles.png') 0 -48px;
 }
 
-#gamecontent td, .guessdiv {
+#minestone td, .guessdiv {
     width:  46px;
     height: 46px;
 	text-align: center;

@@ -17,7 +17,7 @@ function stones_initField(rowc, colc)
 {
 	var rows;
 	var cols;
-	var outer = '<table>';	
+	var outer = '<table id="minestone">';	
 	for (rows = 0; rows<rowc; rows++)
 	{
 		outer+=  '<tr>';

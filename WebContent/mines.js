@@ -44,7 +44,7 @@ function mines_initField(dat)
 {
 	var rows;
 	var cols;
-	var outer = '<table>';	
+	var outer = '<table id="minestone">';	
 	for (rows = 0; rows<dat.row; rows++)
 	{
 		outer+=  '<tr>';
