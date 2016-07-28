@@ -5,4 +5,7 @@
 	Height <input type='number' min=2 max=10 id='col' value="4"  />
 	<input type='button' value='Start new game :)' onclick="stones_newgame();" />
 <br />
-<!--runnable function run_game_${GameIDi}(){stones_newgame();} -->
+<!--runnable 
+	function run_game_${GameIDi}(){stones_newgame();} 
+	function action_game_${GameIDi}(son){stones_parse(son);} 
+-->

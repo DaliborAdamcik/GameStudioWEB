@@ -28,12 +28,21 @@ function initGameList(resp)
 				{
 					var runscript  = document.createElement("script");
 			        runscript.text = runsc[1];
-			        document.body.appendChild(runscript);  
+			        document.body.appendChild(runscript);
 				}
 				else
-					console.log('no runnable set'+game.ID);
+					console.log('no runnable set for '+game.ID);
 			}, 'GET');
-	})
+
+		
+		var runner = 'action_game_'+game.ID;
+
+		//console.log(runner + " "+(window[runner]) );
+		/*if (typeof window[runner] != "undefined") { 
+			
+		}*/
+		
+	});
 
 	menu+='<span id="gs_signin" onclick="gs_signin_div();">Sign IN</span> ';
 	
@@ -64,8 +73,12 @@ function menuItemClick(gID)
 	gs_showComment();
 	document.getElementById('gameattrib').style.display = 'inline-block';
 	var runner = 'run_game_'+gID;
-	console.log(runner);
-	window[runner](); // autorun game
+	try {
+		window[runner](); 
+	}
+	catch(err) {
+		alert('An error starting game id "'+gID+'":\nLoader: '+runner+'\nMessage: '+err.message);
+	}
 }
 
 function gs_showComment()
@@ -122,22 +135,15 @@ function studio_parse(resp) // an entry point for json DATA
 	if(dat.gamelist)
 		initGameList(dat);
 	
-	switch (dat.game) {
-	case 'mines':
-		mines_parse(dat);
-		break;
-
-	case 'stones':
-		stones_parse(dat);
-		break;
-
-	case 'guess':
-		guess_parse(dat);
-		break;
-		
-	default:
-		//alert('undefined game: '+dat.game);
-		break;
+	if(dat.game) // game logic run
+	{
+		var runner = 'action_game_'+activegame;
+		try {
+			window[runner](dat); 
+		}
+		catch(err) {
+		    alert('An error ocured executing game "'+dat.game+'":\nLoader: '+runner+'\nMessage: '+err.message);
+		}
 	}
 
 	if(dat.won)

@@ -9,4 +9,7 @@ Mines <input type='number' min=2 max=10 id='mine_mine'  value="1" />
 	<li>Unmarked mines: <span id="unmark"></span></li>
 	<li>State: <span id="state"></span></li>
 </ul>
-<!--runnable function run_game_${GameIDi}(){mines_newgame();} -->
+<!--runnable 
+	function run_game_${GameIDi}(){mines_newgame();} 
+	function action_game_${GameIDi}(son){mines_parse(son);} 
+-->
