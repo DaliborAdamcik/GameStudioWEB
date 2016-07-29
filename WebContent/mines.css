@@ -58,3 +58,7 @@
     100% { opacity: 0; visibility: hidden; }
 }
 
+.memoitem {
+	margin: 1em;
+	cursor: pointer;
+}

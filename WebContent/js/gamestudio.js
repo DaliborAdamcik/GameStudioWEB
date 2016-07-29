@@ -1,11 +1,12 @@
 var activegame = null;
 var prevdiv = null;
 
-
 function mainAjax(params, callback) { callAjax('SvcGame', params, callback); }
-function guessAjax(params) { callAjax('SvcGame', 'gameID='+activegame+'&option=play&'+params, studio_parse); }
-function stonesAjax(params) { 	guessAjax(params); }
-function minesAjax(params) { 	guessAjax(params); }
+function gameAjax(params) { callAjax('SvcGame', 'gameID='+activegame+'&option=play&'+params, studio_parse); }
+
+function guessAjax(params) { gameAjax(params); }
+function stonesAjax(params) { gameAjax(params); }
+function minesAjax(params) { gameAjax(params); }
 
 function initGameList(gamelist)
 {
