@@ -2,6 +2,7 @@ package sk.dalik;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -116,7 +117,7 @@ public class MemorizeWeb extends HttpServlet {
 				pexeso.add(pex);
 			}
 			
-			// TODO shuffle here
+			Collections.shuffle(pexeso);
 		}
 
 		public int getSize() {

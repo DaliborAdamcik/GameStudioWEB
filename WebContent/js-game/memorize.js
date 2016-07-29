@@ -16,6 +16,9 @@ function memorize_parse(dat)
 	{
 		if(dat.equals)
 		{
+			mem_first.onclick = function () {}
+			mem_second.onclick = mem_first.onclick;
+			
 			mem_first = null;
 			mem_second = null;
 		}
