@@ -18,12 +18,18 @@ function initGameList(gamelist)
 			function (ares){
 				document.getElementById('newgames').innerHTML+=
 				'<div id="ngs_'+game.ID+'" style="display: none;">'+ares+'</div>';
-				var regexrun = /<!--runnable([\s|\S|\n]*)-->/g;
+				//var regexrun = /<!--runnable([\s|\S|\n]*)-->/g;
+				var regexrun = /<!--runnable([\s|\S|\n]*)\$-->[\s|\S|\n]*<!--linkscript([\s|\S|\n]*)#-->/g
 				var runsc = regexrun.exec(ares);
 				if(runsc!=null)
 				{
-					var runscript  = document.createElement("script");
-			        runscript.text = runsc[1];
+					var runscript  = document.createElement("script"); // set runner for game
+			        runscript.text = runsc[1].trim();
+			        document.body.appendChild(runscript);
+
+					runscript  = document.createElement("script"); // link game.js
+			        runscript.src  = 'js-game/'+runsc[2].trim();
+			        runscript.type = 'text/javascript';
 			        document.body.appendChild(runscript);
 				}
 				else

@@ -8,4 +8,6 @@ Width <input type='number' min=10 max=100 id='guess_maxnum' value="20" />
 <!--runnable 
 	function run_game_${GameIDi}(){guess_newgame(document.getElementById('guess_maxnum').value);} 
 	function action_game_${GameIDi}(son){guess_parse(son);} 
--->
+$-->
+<!--linkscript guess.js #-->
+<!--linkcss /-->

@@ -12,4 +12,6 @@ Mines <input type='number' min=2 max=10 id='mine_mine'  value="1" />
 <!--runnable 
 	function run_game_${GameIDi}(){mines_newgame();} 
 	function action_game_${GameIDi}(son){mines_parse(son);} 
--->
+$-->
+<!--linkscript mines.js #-->
+<!--linkcss /-->

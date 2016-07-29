@@ -13,11 +13,6 @@
 	<script type='text/javascript' src='js/register.js'></script>
 	<script type='text/javascript' src='js/services.js'></script>
 	<script type='text/javascript' src='js/signin.js'></script>
-	
-	<script type='text/javascript' src='stones.js'></script>
-	<script type='text/javascript' src='mines.js'></script>
-	<script type='text/javascript' src='guess.js'></script>
-	
 </head>
 <body>
 	<header><span class="title">Game studio</span></header>

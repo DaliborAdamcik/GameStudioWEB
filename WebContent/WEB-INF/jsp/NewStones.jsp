@@ -8,4 +8,6 @@
 <!--runnable 
 	function run_game_${GameIDi}(){stones_newgame();} 
 	function action_game_${GameIDi}(son){stones_parse(son);} 
--->
+$-->
+<!--linkscript stones.js #-->
+<!--linkcss /-->
