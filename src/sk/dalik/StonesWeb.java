@@ -89,6 +89,7 @@ public class StonesWeb extends HttpServlet {
 			if(field.isSolved())
 			{
 				int myscore = (int) (System.currentTimeMillis() - (long) session.getAttribute("stones-time")) / 1000;
+				myscore = (100000 / myscore)*field.getRowCount()*field.getColumnCount();
 				request.setAttribute("score", myscore);
 				json.put("score", myscore);
 			}

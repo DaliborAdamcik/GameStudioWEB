@@ -91,6 +91,8 @@ public class GuessWeb extends HttpServlet {
 				if(res==0)
 				{
 					int myscore = (int) (System.currentTimeMillis() - (long) session.getAttribute("guess-time")) / 1000;
+					myscore = (100000 / myscore)*guess.getBound();
+
 					request.setAttribute("score", myscore);
 					json.put("score", myscore);
 				}

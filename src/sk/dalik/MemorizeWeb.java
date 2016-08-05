@@ -91,6 +91,8 @@ public class MemorizeWeb extends HttpServlet {
 			if(field.isSolved())
 			{
 				int myscore = (int) (System.currentTimeMillis() - (long) session.getAttribute("memorize-time")) / 1000;
+				myscore = (100000 / myscore)*field.getSize();
+
 				request.setAttribute("score", myscore);
 				json.put("score", myscore);
 			}
