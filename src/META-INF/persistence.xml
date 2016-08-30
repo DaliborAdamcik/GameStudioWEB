@@ -3,7 +3,7 @@
 
     <persistence-unit name="hibernatePersistenceUnit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <jar-file>C:\Users\Študent\Desktop\EclipseWork\GameStudioWeb\WebContent\WEB-INF\lib\gamestudio.jar</jar-file>
+        <jar-file>WEB-INF/lib/gamestudio.jar</jar-file>
 		<class>sk.tsystems.gamestudio.services.jpa.GameSvc</class>
 		<class>sk.tsystems.gamestudio.services.jpa.UserSvc</class>
 		<class>sk.tsystems.gamestudio.services.jpa.CommentSvc</class>
@@ -21,7 +21,7 @@
 
             <!-- value="create" to build a new database on each run; value="update" to modify an existing database; value="create-drop" means the same as "create" but also drops tables when Hibernate closes; value="validate" makes no changes to the database -->
             <!--  <property name="hibernate.hbm2ddl.auto" value="create-drop"/> -->
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
 
             <property name="hibernate.show_sql" value="false"/><!-- toto sa pouziva na debug -->
             <property name="hibernate.format_sql" value="true"/>

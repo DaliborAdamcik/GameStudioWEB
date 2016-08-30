@@ -58,16 +58,16 @@ public class SvcGame extends HttpServlet {
 		boolean purecode = false;
 		try
 		(
-				GameService game = new sk.tsystems.gamestudio.services.jdbc.GameSvc();
+				/*GameService game = new sk.tsystems.gamestudio.services.jdbc.GameSvc();
 				UserService user = new sk.tsystems.gamestudio.services.jdbc.UserSvc();
 				CommentService comme = new sk.tsystems.gamestudio.services.jdbc.CommentSvc();
 				ScoreService score =  new sk.tsystems.gamestudio.services.jdbc.ScoreSvc();
-				RatingService rating = new sk.tsystems.gamestudio.services.jdbc.RatingSvc();
-				/*GameService game = new sk.tsystems.gamestudio.services.jpa.GameSvc();
+				RatingService rating = new sk.tsystems.gamestudio.services.jdbc.RatingSvc();*/
+				GameService game = new sk.tsystems.gamestudio.services.jpa.GameSvc();
 				UserService user = new sk.tsystems.gamestudio.services.jpa.UserSvc();
 				CommentService comme = new sk.tsystems.gamestudio.services.jpa.CommentSvc();
 				ScoreService score =  new sk.tsystems.gamestudio.services.jpa.ScoreSvc();
-				RatingService rating = new sk.tsystems.gamestudio.services.jpa.RatingSvc();*/
+				RatingService rating = new sk.tsystems.gamestudio.services.jpa.RatingSvc();
 		)
 		{
 			if(game.listGames().isEmpty()) // we need to create games 
