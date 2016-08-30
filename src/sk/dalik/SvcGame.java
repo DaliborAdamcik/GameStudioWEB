@@ -70,6 +70,31 @@ public class SvcGame extends HttpServlet {
 				RatingService rating = new sk.tsystems.gamestudio.services.jpa.RatingSvc();*/
 		)
 		{
+			if(game.listGames().isEmpty()) // we need to create games 
+			{
+				GameEntity ga = new GameEntity(0, "Minesweeper");
+				ga.setRunnable(sk.tsystems.gamestudio.game.minesweeper.Minesweeper.class);
+				ga.setServletPath("MinesWeb");
+				game.addGame(ga);
+				
+				ga = new GameEntity(0, "Stones");
+				ga.setRunnable(sk.tsystems.gamestudio.game.stones.ui.StonesUI.class);
+				ga.setServletPath("stones");
+				game.addGame(ga);
+
+				ga = new GameEntity(0, "Guess the number");
+				ga.setRunnable(sk.tsystems.gamestudio.game.guessnumber.ui.GuesNumRun.class);
+				ga.setServletPath("Guess");
+				game.addGame(ga);
+
+				ga = new GameEntity(0, "Memorize");
+				//ga.setRunnable(sk.tsystems.gamestudio.game.guessnumber.ui.GuesNumRun.class);
+				ga.setServletPath("memorize");
+				game.addGame(ga);
+				
+			}
+			
+			
 			if(request.getParameter("checknick")!=null)
 			{
 				String nick = request.getParameter("checknick").trim();
