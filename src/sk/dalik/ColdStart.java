@@ -1,6 +1,7 @@
 package sk.dalik;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintStream;
 
 import javax.servlet.ServletException;
@@ -22,7 +23,16 @@ public class ColdStart extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.setOut(new PrintStream(response.getOutputStream(), true));
+		OutputStream os = new OutputStream() {
+			@Override
+			public void write(int b) throws IOException {
+				response.getWriter().write(b);
+			}
+		};
+		
+		PrintStream pr = new PrintStream(os, true); 
+		System.setOut(pr);
+		System.setErr(pr);
 		System.out.println("*** Oracle database structure creator ***");
 		System.out.println("ver 1.0");
 		try(CreatorOracle orcre = new CreatorOracle())
