@@ -30,20 +30,26 @@ public class ColdStart extends HttpServlet {
 			}
 		};
 		
-		PrintStream pr = new PrintStream(os, true); 
-		System.setOut(pr);
-		System.setErr(pr);
-		System.out.println("*** Oracle database structure creator ***");
-		System.out.println("ver 1.0");
-		try(CreatorOracle orcre = new CreatorOracle())
-		{
-			orcre.run();
+		PrintStream oldOut = System.out;
+		PrintStream oldErr = System.err;
+		try(PrintStream pr = new PrintStream(os, true)) { 
+			System.setOut(pr);
+			System.setErr(pr);
+			System.out.println("*** Oracle database structure creator ***");
+			System.out.println("ver 1.0");
+			try(CreatorOracle orcre = new CreatorOracle())
+			{
+				orcre.run();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			System.out.println("\n============== END ==============");
+		} finally {
+			System.setOut(oldOut);
+			System.setErr(oldErr);
 		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		System.out.println("\n============== END ==============");
 	}
 
 }
