@@ -1,5 +1,6 @@
 package sk.tsystems.gamestudio.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -96,5 +97,17 @@ public class ScoreEntity  {
 		this.user = user;
 	}
 	
+	public String getScoreTime() {
+		int millis = this.score % 1000;
+		int secs = this.score / 1000;
+		int mins = secs / 60;
+		secs = secs % 60;
+		return String.format("%d:%d.%d", mins, secs, millis);
+	}
+	
+	public String getFmtDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd. MM. yyyy HH:mm:ss");
+		return sdf.format(date);
+	}
 	
 }

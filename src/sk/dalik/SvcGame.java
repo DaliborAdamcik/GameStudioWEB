@@ -178,6 +178,7 @@ public class SvcGame extends HttpServlet {
 					scr.setGame(gam);
 					
 					score.addScore(scr);
+					child.put("score", scr.getScoreTime());
 				}
 				json.put("gameout", child);
 				request.setAttribute("json", json); // restore main json

@@ -21,9 +21,9 @@ Top score: <br/>
 <c:forEach items="${scores}" var="score">
     <tr>
         <td>${count}.</td>
-        <td>${score.getScore()}</td>
+        <td>${score.getScoreTime()}</td>
         <td>${score.getUser().getName()}</td>
-        <td>${score.getDate()}</td>
+        <td>${score.getFmtDate()}</td>
         <c:set var="count" value="${count + 1}" scope="page"/>
     </tr>
 </c:forEach>
