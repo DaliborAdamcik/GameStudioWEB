@@ -96,8 +96,8 @@ public class StonesWeb extends HttpServlet {
 				ScoreEntity myscore = new ScoreEntity((int) (System.currentTimeMillis() - (long) session.getAttribute("stones-time")),
 						field.getRowCount()*field.getColumnCount()); 
 				
-				request.setAttribute("score", myscore.getScore());
-				json.put("score", myscore);
+				request.setAttribute("score", myscore);
+				json.put("score", myscore.getScore());
 			}
 			
 	

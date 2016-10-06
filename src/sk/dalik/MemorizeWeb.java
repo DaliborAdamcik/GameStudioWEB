@@ -98,8 +98,8 @@ public class MemorizeWeb extends HttpServlet {
 				ScoreEntity myscore = new ScoreEntity((int) (System.currentTimeMillis() - (long) session.getAttribute("memorize-time")),
 						field.getSize()); 
 				
-				request.setAttribute("score", myscore.getScore());
-				json.put("score", myscore);
+				request.setAttribute("score", myscore);
+				json.put("score", myscore.getScore());
 			}
 		}
 		finally {

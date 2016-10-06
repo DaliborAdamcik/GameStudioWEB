@@ -97,8 +97,8 @@ public class GuessWeb extends HttpServlet {
 					/*int myscore = (int) (System.currentTimeMillis() - (long) session.getAttribute("guess-time")) / 1000;
 					myscore = (100000 / myscore)*guess.getBound();*/
 
-					request.setAttribute("score", myscore.getScore());
-					json.put("score", myscore);
+					request.setAttribute("score", myscore);
+					json.put("score", myscore.getScore());
 				}
 			}
 			catch(NumberFormatException | NullPointerException e)
