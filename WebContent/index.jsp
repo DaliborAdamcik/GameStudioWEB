@@ -66,7 +66,8 @@
 	<div id="registerme" class="nicewindow">
 		<span class="title">Game studio registration</span><br/>
 		<table>
-			<tr><td>Your name:</td><td><input type="text" id="gs_reg_name" onkeyup="gs_reg_validnick();" /></td><td><img src="img/err.png" id="val_nick" alt="bee" /></td></tr>
+			<tr><td>Your nick-name:</td><td><input type="text" id="gs_reg_name" onkeyup="gs_reg_validnick();" /></td><td><img src="img/err.png" id="val_nick" alt="bee" /></td></tr>
+			<tr><td>Email address</td><td><input type="text" id="gs_reg_mail" onkeyup="gs_reg_validmail();" /></td><td><img src="img/err.png" id="val_mail" alt="bee" /></td></tr>
 			<tr><td>Password:</td><td><input type="password" id="gs_reg_pass1" onkeyup="gs_reg_validpass();" /></td><td><img src="img/err.png" id="val_pass" alt="bee" /></td></tr>
 			<tr><td>Retype password:</td><td><input type="password" id="gs_reg_pass2" onkeyup="gs_reg_validpass();" /></td></tr>
 			<tr><td>&nbsp;</td><td></td></tr>

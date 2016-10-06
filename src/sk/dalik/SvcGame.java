@@ -1,6 +1,8 @@
 package sk.dalik;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -94,10 +96,16 @@ public class SvcGame extends HttpServlet {
 				
 			}
 			
-			
 			if(request.getParameter("checknick")!=null)
 			{
 				String nick = request.getParameter("checknick").trim();
+				String mail = request.getParameter("mail");
+				if(mail!=null) {
+					json.put("mailnotexists", user.getUser(mail)==null);
+					json.put("mailok", chekMailFmt(mail));
+					json.put("mail", mail);
+				}
+				
 				// TODO check with regex
 				json.put("usernonexists", user.getUser(nick)==null);
 				json.put("nick", nick);
@@ -322,5 +330,12 @@ public class SvcGame extends HttpServlet {
 			json.put("user",rat.getRating());
 		
 		return json;
+	}
+	
+	private Boolean chekMailFmt(String mail) {
+		Pattern mailCHekc = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+		
+		return mailCHekc.matcher(mail).matches();
 	}
 }

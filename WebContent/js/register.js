@@ -21,6 +21,8 @@ function gs_reg_validnick(callsend){
 
 	var img = document.getElementById("val_nick");
 	var usr = document.getElementById("gs_reg_name").value.trim();	
+	var mail = document.getElementById("gs_reg_mail").value.trim();	
+
 	
 	if(usr.length<3)
 	{
@@ -32,19 +34,54 @@ function gs_reg_validnick(callsend){
 	img.title= "Checking name... please wait";
 	img.src="img/loader.gif";
 	
-	mainAjax('checknick='+usr, function(resp){
+	mainAjax('checknick='+usr+(callsend==true?"&mail="+mail:""), function(resp){
 		var jsn = JSON.parse(resp);
 		console.log(jsn);
 		if(jsn.usernonexists)
 		{
 			img.src="img/ok.png";
 			img.title= "NickName is OK";
-			if(callsend)
+			if(callsend && jsn.mailnotexists && jsn.mailok)
 				gs_register_send(jsn.nick, callsend);
 		}
 		else
 		{
 			img.title= "Nick already exists, please type new one";
+			img.src="img/err.png";
+		}
+	});
+}
+
+function gs_reg_validmail(callsend){
+
+	var img = document.getElementById("val_mail");
+	var mail = document.getElementById("gs_reg_mail").value.trim();	
+	var rgmail = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i
+	console.log(mail, !rgmail.test(mail));
+	if(!rgmail.test(mail))
+	{
+		img.title= "You need to enter a valid email address";
+		img.src="img/err.png";
+		return false;
+	}
+
+	img.title= "Checking email address... please wait";
+	img.src="img/loader.gif";
+	
+	
+	mainAjax('checknick='+usr, function(resp){
+		var jsn = JSON.parse(resp);
+		console.log(jsn);
+		if(jsn.usernonexists)
+		{
+			img.src="img/ok.png";
+			img.title= "Email is OK";
+			if(callsend)
+				gs_register_send(jsn.nick, callsend);
+		}
+		else
+		{
+			img.title= "Email address is already registered";
 			img.src="img/err.png";
 		}
 	});
