@@ -15,7 +15,7 @@
 <!-- /com -->
 
 <!-- sco -->
-Top score: <br/>
+Best players (last hour): <br/>
 <table>
 <tr><th>Pos.</th><th>Score</th><th>Name</th><th>Date</th></tr><c:set var="count" value="1" scope="page" />
 <c:forEach items="${scores}" var="score">
