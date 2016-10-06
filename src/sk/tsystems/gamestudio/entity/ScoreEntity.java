@@ -87,4 +87,14 @@ public class ScoreEntity  {
 	public String toString() {
 		return "ScoreEntity [user=" + user + ", date=" + date + ", score=" + score + "]";
 	}
+
+	public void setGame(GameEntity game) {
+		this.game = game;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
+	
+	
 }

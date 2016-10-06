@@ -13,8 +13,8 @@ import sk.tsystems.gamestudio.services.ScoreService;
 import sk.tsystems.gamestudio.services.UserService;
 
 public class ScoreSvc extends jdbcConnector implements ScoreService {
-	private final String INSERT_Q = "INSERT INTO SCORE (USRID, GAMEID, DAT, SCORE) VALUES (?, ?, ?, ?)";
-	private final String SELECT_Q = "SELECT * FROM (SELECT USRID, DAT, SCORE FROM SCORE WHERE GAMEID = ? ORDER BY SCORE.SCORE DESC) WHERE ROWNUM <= 10  ";
+	private final String INSERT_Q = "INSERT INTO SCORE (USRID, GAMEID, DAT, SCORE, descript) VALUES (?, ?, ?, ?, ?)";
+	private final String SELECT_Q = "SELECT * FROM (SELECT USRID, DAT, SCORE, descript FROM SCORE WHERE GAMEID = ? ORDER BY SCORE.SCORE DESC) WHERE ROWNUM <= 10  ";
 	private UserService user;
 
 	public ScoreSvc() {
@@ -31,6 +31,7 @@ public class ScoreSvc extends jdbcConnector implements ScoreService {
 	        
 	        stmt.setDate(3, new java.sql.Date(score.getDate().getTime()));
 	        stmt.setInt(4, score.getScore());
+	        stmt.setInt(5, score.getDesc());
 
 	        stmt.executeUpdate();
         } catch (SQLException e) {
@@ -58,7 +59,7 @@ public class ScoreSvc extends jdbcConnector implements ScoreService {
 	        		if(usr==null)
 	        			throw new RuntimeException("DB integrity problem: user #"+rs.getInt(1)+" not found.");
 
-	        		ScoreEntity sco = new ScoreEntity(game, usr, rs.getInt(3), rs.getDate(2));
+	        		ScoreEntity sco = new ScoreEntity(game, usr, rs.getInt(3), rs.getInt(4), rs.getDate(2));
 	        		results.add(sco);
 	        	}
         	}

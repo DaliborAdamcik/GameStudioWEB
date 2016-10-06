@@ -171,11 +171,13 @@ public class SvcGame extends HttpServlet {
 				request.setAttribute("json", child);
 
 				request.getRequestDispatcher(gam.getServletPath()).include(request, response);
-				Integer scr = (Integer) request.getAttribute("score");   
+				ScoreEntity scr = (ScoreEntity) request.getAttribute("score");   
 				if(scr!=null && user.me()!=null)
 				{
-					ScoreEntity scoo = new ScoreEntity(gam, user.me(), scr);
-					score.addScore(scoo);
+					scr.setUser(user.me());
+					scr.setGame(gam);
+					
+					score.addScore(scr);
 				}
 				json.put("gameout", child);
 				request.setAttribute("json", json); // restore main json
