@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.json.*;
 
+import sk.tsystems.gamestudio.entity.ScoreEntity;
 import sk.tsystems.gamestudio.game.minesweeper.core.*;
 
 /**
@@ -113,10 +114,13 @@ public class MinesWeb extends HttpServlet {
 			if(GameState.SOLVED.equals(field.getState()))
 			{
 				json.put("won", true);
-				int myscore = (int) (System.currentTimeMillis() - (long) session.getAttribute("mines-time")) / 1000;
-				myscore = (100000 / myscore)*field.getRowCount()*field.getColumnCount();
+				ScoreEntity myscore = new ScoreEntity((int) (System.currentTimeMillis() - (long) session.getAttribute("mines-time")),
+						field.getRowCount()*field.getColumnCount()*field.getMineCount()); 
+						
+				/*		(int) (System.currentTimeMillis() - (long) session.getAttribute("mines-time")) / 1000;
+				myscore = (100000 / myscore)*field.getRowCount()*field.getColumnCount();*/
 
-				request.setAttribute("score", myscore);
+				request.setAttribute("score", myscore.getScore());
 				json.put("score", myscore);
 			}
 			

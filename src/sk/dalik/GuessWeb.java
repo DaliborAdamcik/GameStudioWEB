@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
+import sk.tsystems.gamestudio.entity.ScoreEntity;
 import sk.tsystems.gamestudio.game.guessnumber.core.GuessNumber;
 
 /**
@@ -90,10 +91,13 @@ public class GuessWeb extends HttpServlet {
 				json.put("won", res==0);
 				if(res==0)
 				{
-					int myscore = (int) (System.currentTimeMillis() - (long) session.getAttribute("guess-time")) / 1000;
-					myscore = (100000 / myscore)*guess.getBound();
+					ScoreEntity myscore = new ScoreEntity((int) (System.currentTimeMillis() - (long) session.getAttribute("guess-time")),
+							guess.getBound()); 
+					
+					/*int myscore = (int) (System.currentTimeMillis() - (long) session.getAttribute("guess-time")) / 1000;
+					myscore = (100000 / myscore)*guess.getBound();*/
 
-					request.setAttribute("score", myscore);
+					request.setAttribute("score", myscore.getScore());
 					json.put("score", myscore);
 				}
 			}

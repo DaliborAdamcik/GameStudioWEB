@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
+import sk.tsystems.gamestudio.entity.ScoreEntity;
+
 /**
  * Servlet implementation class HelloWorld
  */
@@ -90,10 +92,13 @@ public class MemorizeWeb extends HttpServlet {
 			json.put("won", field.isSolved());
 			if(field.isSolved())
 			{
-				int myscore = (int) (System.currentTimeMillis() - (long) session.getAttribute("memorize-time")) / 1000;
-				myscore = (100000 / myscore)*field.getSize();
+				/*int myscore = (int) (System.currentTimeMillis() - (long) session.getAttribute("memorize-time")) / 1000;
+				myscore = (100000 / myscore)*field.getSize();*/
 
-				request.setAttribute("score", myscore);
+				ScoreEntity myscore = new ScoreEntity((int) (System.currentTimeMillis() - (long) session.getAttribute("memorize-time")),
+						field.getSize()); 
+				
+				request.setAttribute("score", myscore.getScore());
 				json.put("score", myscore);
 			}
 		}
