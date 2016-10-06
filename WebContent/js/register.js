@@ -7,6 +7,7 @@ function gs_showregister()
 	document.getElementById("gs_reg_name").value='';	
 	document.getElementById("gs_reg_pass1").value='';
 	document.getElementById("gs_reg_pass2").value='';
+	document.getElementById("gs_reg_mail").value='';
 	gs_reg_validpass();
 	gs_reg_validnick();
 }
@@ -19,71 +20,80 @@ function gs_hideregister()
 
 function gs_reg_validnick(callsend){
 
-	var img = document.getElementById("val_nick");
+	var img_nick = document.getElementById("val_nick");
+	var img_mail = document.getElementById("val_mail");
+
 	var usr = document.getElementById("gs_reg_name").value.trim();	
+	var pass = document.getElementById("gs_reg_pass1").value.trim();	
 	var mail = document.getElementById("gs_reg_mail").value.trim();	
 
+	var rgmail = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i
 	
 	if(usr.length<3)
 	{
-		img.title= "Name must be minimal 3 characters long";
-		img.src="img/err.png";
-		return false;
+		img_nick.title= "Name must be minimal 3 characters long";
+		img_nick.src="img/err.png";
+	}
+	else {
+		img_nick.title= "Name must be validated online";
+		img_nick.src="img/okw.png";
 	}
 
-	img.title= "Checking name... please wait";
-	img.src="img/loader.gif";
-	
-	mainAjax('checknick='+usr+(callsend==true?"&mail="+mail:""), function(resp){
-		var jsn = JSON.parse(resp);
-		console.log(jsn);
-		if(jsn.usernonexists)
-		{
-			img.src="img/ok.png";
-			img.title= "NickName is OK";
-			if(callsend && jsn.mailnotexists && jsn.mailok)
-				gs_register_send(jsn.nick, callsend);
-		}
-		else
-		{
-			img.title= "Nick already exists, please type new one";
-			img.src="img/err.png";
-		}
-	});
-}
-
-function gs_reg_validmail(callsend){
-
-	var img = document.getElementById("val_mail");
-	var mail = document.getElementById("gs_reg_mail").value.trim();	
-	var rgmail = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i
-	console.log(mail, !rgmail.test(mail));
 	if(!rgmail.test(mail))
 	{
-		img.title= "You need to enter a valid email address";
-		img.src="img/err.png";
-		return false;
+		img_mail.title= "You need to enter a valid email address";
+		img_mail.src="img/err.png";
+	}
+	else {
+		img_mail.title= "Email must be validated online";;
+		img_mail.src="img/okw.png";
 	}
 
-	img.title= "Checking email address... please wait";
-	img.src="img/loader.gif";
+	if(!rgmail.test(mail) || usr.length<3)
+		return false;
+
+	img_nick.title= "Checking name... please wait";
+	img_nick.src="img/loader.gif";
+
+	img_mail.title= "Checking email address... please wait";
+	img_mail.src="img/loader.gif";
 	
-	
-	mainAjax('checknick='+usr, function(resp){
+	mainAjax('checknick='+usr+"&mail="+mail, function(resp){
 		var jsn = JSON.parse(resp);
 		console.log(jsn);
+		
 		if(jsn.usernonexists)
 		{
-			img.src="img/ok.png";
-			img.title= "Email is OK";
-			if(callsend)
-				gs_register_send(jsn.nick, callsend);
+			img_nick.src="img/ok.png";
+			img_nick.title= "Nick-name is OK";
 		}
 		else
 		{
-			img.title= "Email address is already registered";
-			img.src="img/err.png";
+			img_nick.title= "Nick already exists, please type new one";
+			img_nick.src="img/err.png";
 		}
+		
+		if(jsn.mailok)
+		{
+			if(jsn.mailnotexists) {
+				img_mail.src="img/ok.png";
+				img_mail.title= "Email is OK";
+			}
+			else
+			{
+					img_mail.src="img/err.png";
+					img_mail.title= "Email is already registered";
+			}
+		}
+		else
+		{
+			img_mail.title= "Email have invalid format";
+			img_mail.src="img/err.png";
+		}
+
+		if(callsend && jsn.usernonexists && jsn.mailnotexists && jsn.mailok) 
+			gs_register_send(jsn.nick, pass, mail);
+		
 	});
 }
 
@@ -112,9 +122,9 @@ function gs_reg_validpass()
 	return true;
 }
 
-function gs_register_send(name, password)
+function gs_register_send(name, password, email)
 {
-	mainAjax('accact=register&username='+name+'&pass='+password, studio_parse);
+	mainAjax('accact=register&username='+name+'&pass='+password+'&mail='+email, studio_parse);
 }
 
 function gs_doregister()
@@ -122,5 +132,5 @@ function gs_doregister()
 	if(!gs_reg_validpass())
 		return;
 	
-	gs_reg_validnick(document.getElementById("gs_reg_pass1").value.trim());
+	gs_reg_validnick(true);
 }

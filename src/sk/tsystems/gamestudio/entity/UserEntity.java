@@ -15,21 +15,38 @@ public class UserEntity {
 	@Column(name = "PASSW")	
 	private String password;
 	
+	@Column(name = "MAIL")
+	private String mail;
+	
 	public UserEntity() // constructor for JPA
 	{
-		this(0, "");
+		this(0, "", "");
 	}
 
-	public UserEntity(int id, String name) {
+	public UserEntity(int id, String name, String mail) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.mail = mail;
+	}
+	
+	public UserEntity(int id, String name) {
+		this(id, name, "");
 	}
 	
 
 	public int getID() {
 		return id;
 	}
+	
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
 
 	public String getName() {
 		return name;

@@ -228,6 +228,7 @@ public class SvcGame extends HttpServlet {
 			String name = request.getParameter("username");
 			String pass = request.getParameter("pass");
 			String newpass = request.getParameter("new");
+			String mail = request.getParameter("mail");
 			
 			if("signout".equals(action)) // logout
 			{
@@ -242,17 +243,22 @@ public class SvcGame extends HttpServlet {
 				jsona.put("message", "Registration failed");
 				try
 				{
+					mail= mail.toLowerCase();
 					if(name.length()<3)
 						jsona.put("message", "Name is too short");
 					else
 					if(pass.length()<3)
 						jsona.put("message", "Password is too short");
 					else
+					if(!chekMailFmt(mail))
+						jsona.put("message", "Invalid email address");
+					else
 					{ 
 						UserEntity usrik = user.addUser(name); 
 						usrik.setPassword(pass);
+						usrik.setMail(mail);
 						if(!user.updateUser(usrik))
-							jsona.put("message", "Error setting new password"); // TODO what do do??
+							jsona.put("message", "Error updating account"); // TODO what do do??
 							
 						jsona.put("message", usrik!=null?"ok":"fail");
 						request.getSession().setAttribute("userID", usrik.getID());
@@ -262,7 +268,8 @@ public class SvcGame extends HttpServlet {
 				}
 				catch(NullPointerException e)
 				{
-					jsonm.put("error", e.getMessage());
+					jsona.put("message", "Registration failed. Required fields is no set.");
+					e.printStackTrace();
 				}
 				return;
 			}
