@@ -8,7 +8,7 @@ import sk.tsystems.gamestudio.services.UserService;
 
 public class UserSvc extends jdbcConnector implements UserService {
 	private final String SELECT_QI = "SELECT USRID, UNAME, PWD FROM USRS WHERE USRID = ?";
-	private final String SELECT_QN = "SELECT USRID, UNAME, PWD FROM USRS WHERE UNAME = ?";
+	private final String SELECT_QN = "SELECT USRID, UNAME, PWD, email FROM USRS WHERE ? in (UNAME, email)";
 	private final String INSERT_Q = "INSERT INTO USRS (UNAME, USRID, PWD, EMAIL) VALUES (?, USRID_SEQ.nextval, '1234', 'newusr'||USRID_SEQ.nextval||'@gamestudio' )";
 	private final String UPDATE_Q = "UPDATE USRS SET UNAME = ?, PWD = ? WHERE USRID = ?";
 	private static UserService instance = null;
