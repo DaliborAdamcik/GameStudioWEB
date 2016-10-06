@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import sk.tsystems.gamestudio.entity.ScoreEntity;
 import sk.tsystems.gamestudio.game.stones.core.*;
 import org.json.JSONObject;
 
@@ -88,9 +89,14 @@ public class StonesWeb extends HttpServlet {
 			json.put("won", field.isSolved());
 			if(field.isSolved())
 			{
-				int myscore = (int) (System.currentTimeMillis() - (long) session.getAttribute("stones-time")) / 1000;
+				/*int myscore = (int) (System.currentTimeMillis() - (long) session.getAttribute("stones-time")) / 1000;
 				myscore = (100000 / myscore)*field.getRowCount()*field.getColumnCount();
-				request.setAttribute("score", myscore);
+				myscore = (int) (System.currentTimeMillis() - (long) session.getAttribute("stones-time"));
+				*/
+				ScoreEntity myscore = new ScoreEntity((int) (System.currentTimeMillis() - (long) session.getAttribute("stones-time")),
+						field.getRowCount()*field.getColumnCount()); 
+				
+				request.setAttribute("score", myscore.getScore());
 				json.put("score", myscore);
 			}
 			
