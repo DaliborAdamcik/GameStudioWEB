@@ -12,7 +12,7 @@ import sk.tsystems.gamestudio.services.CommentService;
 import sk.tsystems.gamestudio.services.GameService;
 import sk.tsystems.gamestudio.services.UserService;
 
-public class CommentSvc extends jdbcConnector implements CommentService {
+abstract class CommentSvc extends UserSvc implements CommentService {
 	private final String INSERT_Q = "INSERT INTO comments (usrid, gameid, dat, msg, COMID) VALUES (?, ?, ?, ?, COMID_SEQ.nextval)";
 	private final String SELECT_Q = "SELECT COMID, USRID, GAMEID, DAT, MSG FROM comments WHERE %s = ? AND ROWNUM <= ? ORDER BY COMID DESC";
 	private UserService user;
@@ -21,8 +21,8 @@ public class CommentSvc extends jdbcConnector implements CommentService {
 	
 	public CommentSvc() {
 		super();
-		this.user = UserSvc.getInstance();
-		this.game = GameSvc.getInstance();
+		this.user = this;
+		this.game = this;
 	}
 
 	@Override

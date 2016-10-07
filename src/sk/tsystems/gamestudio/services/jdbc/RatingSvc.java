@@ -10,7 +10,7 @@ import sk.tsystems.gamestudio.entity.UserEntity;
 import sk.tsystems.gamestudio.services.RatingService;
 import sk.tsystems.gamestudio.services.UserService;
 
-public class RatingSvc extends jdbcConnector implements RatingService {
+abstract class RatingSvc extends CommentSvc implements RatingService {
 	private UserService users;
 	private final String UPDATE_Q = "UPDATE RATING SET RATING = ?, DAT = current_timestamp WHERE usrid = ? AND gameid = ?"; 
 	private final String INSERT_Q = "INSERT INTO rating (usrid, gameid, rating) values (?, ?, ?)"; 
@@ -21,7 +21,7 @@ public class RatingSvc extends jdbcConnector implements RatingService {
 		
 	public RatingSvc() {
 		super();
-		this.users = UserSvc.getInstance();
+		this.users = this;
 	}
 
 	@Override

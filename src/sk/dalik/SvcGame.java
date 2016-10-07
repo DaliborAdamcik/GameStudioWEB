@@ -21,6 +21,7 @@ import sk.tsystems.gamestudio.services.GameService;
 import sk.tsystems.gamestudio.services.RatingService;
 import sk.tsystems.gamestudio.services.ScoreService;
 import sk.tsystems.gamestudio.services.UserService;
+import sk.tsystems.gamestudio.services.jdbc.CommonServices;
 import sk.tsystems.gamestudio.services.jdbc.StatisticsDTO;
 
 /**
@@ -60,11 +61,7 @@ public class SvcGame extends HttpServlet {
 		boolean purecode = false;
 		try
 		(
-				GameService game = new sk.tsystems.gamestudio.services.jdbc.GameSvc();
-				UserService user = new sk.tsystems.gamestudio.services.jdbc.UserSvc();
-				CommentService comme = new sk.tsystems.gamestudio.services.jdbc.CommentSvc();
-				ScoreService score =  new sk.tsystems.gamestudio.services.jdbc.ScoreSvc();
-				RatingService rating = new sk.tsystems.gamestudio.services.jdbc.RatingSvc();
+				CommonServices common = new sk.tsystems.gamestudio.services.jdbc.CommonServices();
 				/*GameService game = new sk.tsystems.gamestudio.services.jpa.GameSvc();
 				UserService user = new sk.tsystems.gamestudio.services.jpa.UserSvc();
 				CommentService comme = new sk.tsystems.gamestudio.services.jpa.CommentSvc();
@@ -72,6 +69,12 @@ public class SvcGame extends HttpServlet {
 				RatingService rating = new sk.tsystems.gamestudio.services.jpa.RatingSvc();*/
 		)
 		{
+			GameService game = common;
+			UserService user = common;
+			CommentService comme = common;
+			ScoreService score =  common;
+			RatingService rating = common;
+			
 			if(game.listGames().isEmpty()) // we need to create games 
 			{
 				GameEntity ga = new GameEntity(0, "Minesweeper");

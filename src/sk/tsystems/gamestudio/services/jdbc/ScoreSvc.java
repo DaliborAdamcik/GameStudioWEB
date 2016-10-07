@@ -12,14 +12,14 @@ import sk.tsystems.gamestudio.entity.UserEntity;
 import sk.tsystems.gamestudio.services.ScoreService;
 import sk.tsystems.gamestudio.services.UserService;
 
-public class ScoreSvc extends jdbcConnector implements ScoreService {
+abstract class ScoreSvc extends RatingSvc implements ScoreService {
 	private final String INSERT_Q = "INSERT INTO SCORE (USRID, GAMEID, DAT, SCORE, descript) VALUES (?, ?, ?, ?, ?)";
 	private final String SELECT_Q = "SELECT * FROM (SELECT USRID, DAT, SCORE, descript, TO_CHAR(DAT, 'dd. mm. yyyy HH24:mi:ss') as datFmt FROM SCORE WHERE GAMEID = ? ORDER BY SCORE.SCORE ASC) WHERE ROWNUM <= 10  ";
 	private UserService user;
 
 	public ScoreSvc() {
 		super();
-		this.user = UserSvc.getInstance();
+		this.user = this;
 	}
 
 	@Override

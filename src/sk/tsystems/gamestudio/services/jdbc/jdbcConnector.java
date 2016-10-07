@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 
 public abstract class jdbcConnector implements AutoCloseable{
 	// configuration for database connection  
@@ -92,7 +91,7 @@ public abstract class jdbcConnector implements AutoCloseable{
 	{
 		try {
 			return dbCon.isValid(timeout);
-		} catch (SQLException e) {
+		} catch (NullPointerException | SQLException e) {
 		}
 		return false;
 	}
