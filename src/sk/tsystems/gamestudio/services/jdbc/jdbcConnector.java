@@ -1,10 +1,11 @@
 package sk.tsystems.gamestudio.services.jdbc;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.io.InputStream;
 import java.util.Properties;
 
-
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 
 public abstract class jdbcConnector implements AutoCloseable{
 	// configuration for database connection  
@@ -21,9 +22,6 @@ public abstract class jdbcConnector implements AutoCloseable{
 		
 		if(!configurationLoaded)
 			loadConfiguration();
-		
-		/*if(!verifyConn())
-			establishConn();*/
 	}
 	
 	private void loadConfiguration()
@@ -68,16 +66,12 @@ public abstract class jdbcConnector implements AutoCloseable{
         try
         {
             Class.forName("oracle.jdbc.OracleDriver");
-            try
-            {
-            	dbCon = DriverManager.getConnection(host, user, password);
-            	System.out.println("** new db conn ***");
-            }
-            catch(Exception e)
-            {
-            	// retry on any exception to connect
-            	dbCon = DriverManager.getConnection(host, user, password);
-            }
+			try {
+				dbCon = DriverManager.getConnection(host, user, password);
+			} catch (SQLException e) {
+				// retry on exception to connect
+				dbCon = DriverManager.getConnection(host, user, password);
+			}
         }
         catch(Exception e)
         {
@@ -88,14 +82,9 @@ public abstract class jdbcConnector implements AutoCloseable{
 	
 	private void tryCloseDBConn()
 	{
-    	try // try to close 
-    	{
+    	try {
     		dbCon.close();
-    	}
-    	catch (Exception e)
-    	{
-    		// we don't popup any exception, its (maybe) always ok (because, we can have an invalid connection)
-    	}
+    	} catch (Exception e) { }
     	dbCon = null;
 	}
 	
@@ -103,8 +92,7 @@ public abstract class jdbcConnector implements AutoCloseable{
 	{
 		try {
 			return dbCon.isValid(timeout);
-		} 
-		catch (Exception e) {
+		} catch (SQLException e) {
 		}
 		return false;
 	}
@@ -118,7 +106,7 @@ public abstract class jdbcConnector implements AutoCloseable{
 	}
 
 	@Override
-	public void close() throws Exception {
+	public void close() /* throws Exception */{
 		tryCloseDBConn();
 	}
 }	
