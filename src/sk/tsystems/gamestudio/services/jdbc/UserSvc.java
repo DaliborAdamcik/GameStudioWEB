@@ -7,7 +7,7 @@ import sk.tsystems.gamestudio.entity.UserEntity;
 import sk.tsystems.gamestudio.services.UserService;
 
 abstract class UserSvc extends GameSvc implements UserService {
-	private final String SELECT_QI = "SELECT USRID, UNAME, PWD FROM USRS WHERE USRID = ?";
+	private final String SELECT_QI = "SELECT USRID, UNAME, PWD, email FROM USRS WHERE USRID = ?";
 	private final String SELECT_QN = "SELECT USRID, UNAME, PWD, email FROM USRS WHERE ? in (UNAME, email)";
 	private final String INSERT_Q = "INSERT INTO USRS (UNAME, USRID, PWD, EMAIL) VALUES (?, USRID_SEQ.nextval, '1234', 'newusr'||USRID_SEQ.nextval||'@gamestudio' )";
 	private final String UPDATE_Q = "UPDATE USRS SET UNAME = ?, PWD = ?, EMAIL = ? WHERE USRID = ?";
@@ -36,6 +36,7 @@ abstract class UserSvc extends GameSvc implements UserService {
 	        	{	
 	        		UserEntity usr = new UserEntity(rs.getInt(1), rs.getString(2)); 
 	        		usr.setPassword(rs.getString(3));
+	        		usr.setMail(rs.getString(4));
 	        		return usr;
 	        	}
         	}
