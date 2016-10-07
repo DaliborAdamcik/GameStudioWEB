@@ -56,7 +56,7 @@ public class MemorizeWeb extends HttpServlet {
 			MemorizeLogic field = (MemorizeLogic) session.getAttribute("memorize");
 
 			if (field == null || action.compareTo("new")==0) {
-				field = new MemorizeLogic(3);
+				field = new MemorizeLogic(7);
 				
 				session.setAttribute("memorize", field);
 				session.setAttribute("memorize-time", System.currentTimeMillis());
