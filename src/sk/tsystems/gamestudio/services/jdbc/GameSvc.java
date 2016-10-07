@@ -35,19 +35,12 @@ abstract class GameSvc extends jdbcConnector implements GameService {
 	        		GameEntity game  = new GameEntity(rs.getInt(1), rs.getString(2));
 
 	        		if(rs.getString(4)!=null) // we have class for this file try to get class
-	        		try
-	        		{
-	        			/*java.nio.file.Path currentRelativePath = java.nio.file.Paths.get("");
-	        			String s = currentRelativePath.toAbsolutePath().toString();
-	        			System.out.println("Current relative path is: " + s);*/	        			
-	        			
-	        			Class<?> clazz = Class.forName(rs.getString(4));
-	        			game.setRunnable(clazz);
-	        		}
-	        		catch(Exception e)
-	        		{
-	        			e.printStackTrace();
-	        		}
+						try {
+							Class<?> clazz = Class.forName(rs.getString(4));
+							game.setRunnable(clazz);
+						} catch (ClassNotFoundException e) {
+							//e.printStackTrace();
+						}
 	        		
 	        		if(rs.getString(3)!=null)
 	        			game.setServletPath(rs.getString(3));

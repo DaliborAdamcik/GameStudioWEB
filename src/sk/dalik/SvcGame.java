@@ -78,17 +78,17 @@ public class SvcGame extends HttpServlet {
 			if(game.listGames().isEmpty()) // we need to create games 
 			{
 				GameEntity ga = new GameEntity(0, "Minesweeper");
-				ga.setRunnable(sk.tsystems.gamestudio.game.minesweeper.Minesweeper.class);
+				//ga.setRunnable(sk.tsystems.gamestudio.game.minesweeper.Minesweeper.class);
 				ga.setServletPath("MinesWeb");
 				game.addGame(ga);
 				
 				ga = new GameEntity(0, "Stones");
-				ga.setRunnable(sk.tsystems.gamestudio.game.stones.ui.StonesUI.class);
+				//ga.setRunnable(sk.tsystems.gamestudio.game.stones.ui.StonesUI.class);
 				ga.setServletPath("stones");
 				game.addGame(ga);
 
 				ga = new GameEntity(0, "Guess the number");
-				ga.setRunnable(sk.tsystems.gamestudio.game.guessnumber.ui.GuesNumRun.class);
+				//ga.setRunnable(sk.tsystems.gamestudio.game.guessnumber.ui.GuesNumRun.class);
 				ga.setServletPath("Guess");
 				game.addGame(ga);
 
