@@ -22,8 +22,8 @@ public abstract class jdbcConnector implements AutoCloseable{
 		if(!configurationLoaded)
 			loadConfiguration();
 		
-		if(!verifyConn())
-			establishConn();
+		/*if(!verifyConn())
+			establishConn();*/
 	}
 	
 	private void loadConfiguration()
@@ -71,6 +71,7 @@ public abstract class jdbcConnector implements AutoCloseable{
             try
             {
             	dbCon = DriverManager.getConnection(host, user, password);
+            	System.out.println("** new db conn ***");
             }
             catch(Exception e)
             {
@@ -101,14 +102,14 @@ public abstract class jdbcConnector implements AutoCloseable{
 	private boolean verifyConn()
 	{
 		try {
-			return dbCon.isValid(5);
+			return dbCon.isValid(timeout);
 		} 
 		catch (Exception e) {
 		}
 		return false;
 	}
 	
-	synchronized public Connection conn()
+	public Connection conn()
 	{
 		if( !verifyConn() )
 			establishConn();
@@ -117,7 +118,7 @@ public abstract class jdbcConnector implements AutoCloseable{
 	}
 
 	@Override
-	synchronized public void close() throws Exception {
+	public void close() throws Exception {
 		tryCloseDBConn();
 	}
 }	
