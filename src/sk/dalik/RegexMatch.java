@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.print.DocFlavor.STRING;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -50,72 +49,50 @@ public class RegexMatch extends HttpServlet {
 		
 		json.put("game", "regmatch");
 		
-		try
-		{
-			String action = request.getParameter("action");
-			if(action == null )
-				action = "none";
+		String action = request.getParameter("action");
+		if(action == null )
+			action = "none";
+		
+		HttpSession session = request.getSession();
+		RegxLogic field = (RegxLogic) session.getAttribute("regexmatch");
+
+		if (field == null || action.compareTo("new")==0) {
+			field = new RegxLogic();
 			
-			HttpSession session = request.getSession();
-			RegxLogic field = (RegxLogic) session.getAttribute("regexmatch");
+			session.setAttribute("regexmatch", field);
+			session.setAttribute("regexmatch-time", System.currentTimeMillis());
 
-			if (field == null || action.compareTo("new")==0) {
-				field = new RegxLogic();
-				
-				session.setAttribute("regexmatch", field);
-				session.setAttribute("regexmatch-time", System.currentTimeMillis());
-
-				json.put("newgame", true);
-				json.put("words", field.getWordList());
-				//json.put("size", field.getSize());
-				//regexmatch
-			}
-
-			if (action.compareTo("tryhit")==0) {
-				String word = request.getParameter("word");
-				if(word == null)
-					word = "";
-
-				boolean hit = field.tryHit(word);
-				json.put("hit", hit);
-			}
-
-			json.put("regex", field.getRegex());
-
-			/*if (action.compareTo("open")==0) {
-				try {
-					int second = Integer.parseInt(request.getParameter("num"));
-
-					Integer first;
-					if((first = (Integer)session.getAttribute("mem-first"))==null)
-						session.setAttribute("mem-first", second);
-					else
-					{	
-						session.setAttribute("mem-first", null);
-						json.put("docompare", true);
-						json.put("first", first);
-						json.put("second", second);
-						json.put("equals", field.equal(first, second));
-					}	
-						
-					json.put("valfor", second);
-					json.put("value", field.valOf(second));
-						
-				} catch (NumberFormatException | NullPointerException e) {
-				}
-			}
-			
-			/*json.put("won", field.isSolved());
-			if(field.isSolved())
-			{
-				ScoreEntity myscore = new ScoreEntity((int) (System.currentTimeMillis() - (long) session.getAttribute("memorize-time")),
-						field.getSize()); 
-				
-				request.setAttribute("score", myscore);
-				json.put("score", myscore.getScore());
-			}*/
+			json.put("newgame", true);
+			json.put("words", field.getWordList());
+			//regexmatch
 		}
-		finally {
+		
+		if(request.getParameter("retid")!=null) 
+			json.put("retid", request.getParameter("retid"));
+
+		if (action.compareTo("tryhit")==0) {
+			String word = request.getParameter("word");
+			if(word == null)
+				word = "";
+
+			boolean hit = field.tryHit(word);
+			json.put("hit", hit);
+		}
+
+		json.put("regex", field.getRegex());
+		json.put("tryc", field.tryCount());
+		json.put("hitc", field.hitCount());
+		json.put("size", field.regexCount());
+
+
+		json.put("won", field.isWin());
+		if(field.isWin())
+		{
+			ScoreEntity myscore = new ScoreEntity((int) (System.currentTimeMillis() - (long) session.getAttribute("regexmatch-time")),
+					0); 
+			
+			request.setAttribute("score", myscore);
+			json.put("score", myscore.getScore());
 		}
 	}
 	
@@ -140,59 +117,22 @@ public class RegexMatch extends HttpServlet {
 		public boolean tryHit(String word) {
 			return levels.get(0).tryHit(word);
 		}
-		/*public int getSize() {
-			return pexeso.size();
+		
+		public int tryCount() {
+			return levels.get(0).tryCnt;
 		}
 		
-		public boolean isSolved()
-		{
-			boolean sol = true;
-			for(Pex pe: pexeso)
-				sol &= pe.isOpen();
-			
-			return sol;
+		public int hitCount() {
+			return levels.get(0).hitCount;
 		}
 		
-		public boolean equal(int first, int second)
-		{
-			if(!testeqp(first) && !testeqp(second))
-				throw new RuntimeException("Out of bounds");
-			
-			if(pexeso.get(first).equals(pexeso.get(second)))
-			{
-				pexeso.get(first).setOpen();
-				return true;
-			}
-			
-			return false;
+		public boolean isWin() {
+			return levels.get(0).isWin();
 		}
-
-		public int valOf(int index)
-		{
-			if(!testeqp(index))
-				throw new RuntimeException("Out of bounds");
-			
-			return pexeso.get(index).getNum(); 
+		
+		public int regexCount() {
+			return levels.get(0).regexCount();
 		}
-
-		
-		public List<Integer> listItems()
-		{
-			List<Integer> lis = new ArrayList<>();
-			for(Pex pe: pexeso)
-			{
-				if (pe.isOpen())
-					lis.add(pe.getNum());
-				else
-					lis.add(-1);
-			}
-			return lis;
-		}*/
-		
-		/*private boolean testeqp(int i)
-		{
-			return i>=0 && i<pexeso.size();
-		}*/
 		
 		private class Regexo
 		{
@@ -212,6 +152,8 @@ public class RegexMatch extends HttpServlet {
 				this.text = text;
 				words = new ArrayList<>(Arrays.asList(text.split(" ")));
 				regexs = new ArrayList<>(Arrays.asList(rexes.split("\\|")));
+				Collections.shuffle(regexs);
+
 				tryCnt = 0;
 				pos = -1;
 				hitCount = 0;
@@ -241,35 +183,41 @@ public class RegexMatch extends HttpServlet {
 				
 				target = mat.group(1);
 				
-				System.out.println(target);
-				
 				return true;
 			}
 			
 			public boolean tryHit(String word) {
 				try {
-					if(word.indexOf(word) < 0)
+					if(words.indexOf(word) < 0)
 						throw new NoHitException("No word in list");
 					
 					if(word.compareTo(target)!=0)
 						throw new NoHitException("Bad word");
 					
 					nextPat();
+					hitCount++;
 					
 					return true;
 					
 				} catch (NoHitException e) {
-					e.printStackTrace();
-					if(tryCnt++==3)
+					if(tryCnt++==2)
+					{
+						tryCnt++;
 						nextPat();
-					
+					}
 					return false;
 				}
 			}
 			
+			public boolean isWin() {
+				return hitCount == regexs.size();
+			}
+			
+			public int regexCount() {
+				return regexs.size();
+			}
+			
 		}
-		
-		
 		
 	}
 }

@@ -9,49 +9,39 @@ function regexmatch_parse(dat)
 	if(dat.newgame)
 		regexmatch_initGame(dat);
 	
-	
-	/*
-	if(dat.valfor>=0)
-		document.getElementById('mery_'+dat.valfor).src = 'img/mery_'+dat.value+'.png';
-	
-	if(dat.docompare)
-	{
-		if(dat.equals)
-		{
-			mem_first.onclick = function () {}
-			mem_second.onclick = mem_first.onclick;
+	if(dat.retid) {
+		document.getElementById(dat.retid).className = (dat.hit?'rehit':'remiss');
+		if(dat.hit) {
+			document.getElementById(dat.retid).onClick = function () {};
 			
-			mem_first = null;
-			mem_second = null;
+			document.getElementById("rexy").childNodes.forEach(function (child) {
+				if(child.className=='remiss')
+					child.className='rwrd';
+			});
 		}
-		else
-		setTimeout(function () {
-
-			mem_first.src = 'img/tileback.gif';
-			mem_second.src = 'img/tileback.gif';
-
-			mem_first = null;
-			mem_second = null;
-		}, 2000);
-	}*/
+	}
+	
+	document.getElementById('rtries').innerText = 'Try #'+dat.tryc;
+	//document.getElementById('regs').innerText = 'Regexs count: '+dat.size;
+	document.getElementById('regs').innerHTML = dat.regex;
 }
 
 function regexmatch_initGame(dat)
 {
-	var outer = '<div class="hotwo"><div>Regex to find a word</div><div id="regs"></div><div id="rtries"></div><div></div></div>';
-	// TODO: sem dat este policko na slovo
+	var outer = '<div class="hotwo"><div>Regex to find a word</div><div id="regs"></div><div id="rtries"></div><div></div></div><div id="rexy">';
+	
 	
 	var counter = 0;
 	dat.words.forEach(function (word)  {
-		outer+=  '<span id="rwo'+counter+'" class="rwrd" onclick="rgm_play(this);"/>'+word+'</span>&nbsp;';
+		outer+=  '<span id="rwo'+(counter++)+'" class="rwrd" onclick="rgm_play(this);"/>'+word+'</span>&nbsp;';
 	});
 	
-	document.getElementById('gamecontent').innerHTML = outer;
+	document.getElementById('gamecontent').innerHTML = outer+'</div>';
 }
 
 function rgm_play(sender)
 {
-	gameAjax('action=tryhit&word='+sender.innerText);
+	gameAjax('action=tryhit&word='+sender.innerText+'&retid='+sender.id);
 	
 	/*if(mem_first!=null && mem_second!= null) // cant click
 		return;
