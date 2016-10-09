@@ -97,6 +97,10 @@ public class SvcGame extends HttpServlet {
 				ga.setServletPath("memorize");
 				game.addGame(ga);
 				
+				ga = new GameEntity(0, "Regex match");
+				//ga.setRunnable(sk.tsystems.gamestudio.game.guessnumber.ui.GuesNumRun.class);
+				ga.setServletPath("regmatch");
+				game.addGame(ga);
 			}
 			
 			if(request.getParameter("checknick")!=null)
