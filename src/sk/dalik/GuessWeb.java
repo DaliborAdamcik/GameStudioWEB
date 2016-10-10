@@ -11,8 +11,10 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
+import sk.tsystems.gamestudio.entity.GameEntity;
 import sk.tsystems.gamestudio.entity.ScoreEntity;
 import sk.tsystems.gamestudio.game.guessnumber.core.GuessNumber;
+import sk.tsystems.gamestudio.services.GameService;
 
 /**
  * Servlet implementation class HelloWorld
@@ -67,7 +69,10 @@ public class GuessWeb extends HttpServlet {
 			
 			if(guess== null || action.compareTo("new")==0)
 			{
-				guess = new GuessNumber(size);
+				GameService gamSvc = (GameService) request.getAttribute("commonsvc");
+				GameEntity gamEnt = (GameEntity) request.getAttribute("commonsvcgam");
+							
+				guess = new GuessNumber(gamSvc.gameSetting(gamEnt, "guess_size", Integer.class, 100));
 				
 				session.setAttribute("guess", guess);
 				session.setAttribute("guess-time", System.currentTimeMillis());

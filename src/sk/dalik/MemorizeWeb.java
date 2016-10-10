@@ -13,7 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
+import sk.tsystems.gamestudio.entity.GameEntity;
 import sk.tsystems.gamestudio.entity.ScoreEntity;
+import sk.tsystems.gamestudio.services.GameService;
 
 /**
  * Servlet implementation class HelloWorld
@@ -56,7 +58,10 @@ public class MemorizeWeb extends HttpServlet {
 			MemorizeLogic field = (MemorizeLogic) session.getAttribute("memorize");
 
 			if (field == null || action.compareTo("new")==0) {
-				field = new MemorizeLogic(7);
+				GameService gamSvc = (GameService) request.getAttribute("commonsvc");
+				GameEntity gamEnt = (GameEntity) request.getAttribute("commonsvcgam");
+							
+				field = new MemorizeLogic(gamSvc.gameSetting(gamEnt, "memorize_size", Integer.class, 7));
 				
 				session.setAttribute("memorize", field);
 				session.setAttribute("memorize-time", System.currentTimeMillis());

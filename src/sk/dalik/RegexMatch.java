@@ -98,8 +98,6 @@ public class RegexMatch extends HttpServlet {
 			if(word == null)
 				word = "";
 			
-			//word = java.net.URLDecoder.decode(((String[])request.getParameterMap().get("word"))[0], "windows-1250");
-
 			boolean hit = field.tryHit(word);
 			json.put("hit", hit);
 		}

@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.json.*;
 
+import sk.tsystems.gamestudio.entity.GameEntity;
 import sk.tsystems.gamestudio.entity.ScoreEntity;
 import sk.tsystems.gamestudio.game.minesweeper.core.*;
+import sk.tsystems.gamestudio.services.GameService;
 
 /**
  * Servlet implementation class MinesWeb
@@ -63,6 +65,14 @@ public class MinesWeb extends HttpServlet {
 				int row = tryParseInt(request.getParameter("row"));
 				int col = tryParseInt(request.getParameter("col"));
 				int mines = tryParseInt(request.getParameter("mine"));
+				
+				GameService gamSvc = (GameService) request.getAttribute("commonsvc");
+				GameEntity gamEnt = (GameEntity) request.getAttribute("commonsvcgam");
+				
+				row = gamSvc.gameSetting(gamEnt, "mines_rows", Integer.class, 5);
+				col = gamSvc.gameSetting(gamEnt, "mines_cols", Integer.class, 5);
+				mines = gamSvc.gameSetting(gamEnt, "mines_mines", Integer.class, 5);
+				
 				json.put("row", row);
 				json.put("col", col);
 				
@@ -109,7 +119,7 @@ public class MinesWeb extends HttpServlet {
 						break;
 				}
 			}
-			catch(NumberFormatException e){} 
+			catch(NullPointerException | NumberFormatException e){} 
 			
 			if(GameState.SOLVED.equals(field.getState()))
 			{

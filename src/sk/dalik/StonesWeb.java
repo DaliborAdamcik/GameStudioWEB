@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import sk.tsystems.gamestudio.entity.GameEntity;
 import sk.tsystems.gamestudio.entity.ScoreEntity;
 import sk.tsystems.gamestudio.game.stones.core.*;
+import sk.tsystems.gamestudio.services.GameService;
+
 import org.json.JSONObject;
 
 /**
@@ -70,6 +73,12 @@ public class StonesWeb extends HttpServlet {
 					row = 4;
 					col = 4;
 				}
+				GameService gamSvc = (GameService) request.getAttribute("commonsvc");
+				GameEntity gamEnt = (GameEntity) request.getAttribute("commonsvcgam");
+				
+				row = gamSvc.gameSetting(gamEnt, "stones_rows", Integer.class, 4);
+				col = gamSvc.gameSetting(gamEnt, "stones_cols", Integer.class, 4);
+
 				field = new Field(row, col);
 				session.setAttribute("stones", field);
 				session.setAttribute("stones-time", System.currentTimeMillis());
