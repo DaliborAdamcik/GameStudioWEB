@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import sk.dalik.stats.DTO.TwoGameDTO;
 import sk.tsystems.gamestudio.entity.GameEntity;
 import sk.tsystems.gamestudio.entity.ScoreEntity;
 import sk.tsystems.gamestudio.entity.UserEntity;
@@ -18,6 +19,7 @@ abstract class ScoreSvc extends RatingSvc implements ScoreService {
 	private final String INSERT_Q = "INSERT INTO SCORE (USRID, GAMEID, DAT, SCORE, descript) VALUES (?, ?, ?, ?, ?)";
 	private final String SELECT_Q = "SELECT * FROM (SELECT USRID, DAT, SCORE, descript, datFmt FROM scoretable WHERE GAMEID = ? AND scoretable.dat>= (select last_hr from lasthr) ) WHERE ROWNUM <= 10";
 	private final String SELECT_HOURLY = "select * from scoretablehourly";
+	private final String SELECT_HOURLY2G = "select * from scoretablehourly2g";
 	private UserService user;
 
 	public ScoreSvc() {
@@ -123,6 +125,38 @@ abstract class ScoreSvc extends RatingSvc implements ScoreService {
 		return 0;		
 	}
 	
+	@Override
+	public Map<String, List<TwoGameDTO>> topScoresHourly2g() {
+		TreeMap<String, List<TwoGameDTO>> map = new TreeMap<>();
+				
+		
+		try(PreparedStatement stmt = this.conn().prepareStatement(SELECT_HOURLY2G))
+        {
+        	try(ResultSet rs = stmt.executeQuery())
+        	{
+	        	while(rs.next())
+	        	{
+	        		String hourly = rs.getString(6);
+	        		List<TwoGameDTO> forhour = map.get(hourly);
+	        		if(forhour==null) {
+	        			forhour = new ArrayList<>();
+	        			map.put(hourly, forhour);
+	        		}
+	        		// usrid, gmaeid, dat, 
+	        		UserEntity usr = user.getUser(rs.getInt(1));
+	        		
+	        		TwoGameDTO sco = new TwoGameDTO(usr, 
+	        				rs.getLong(2), rs.getString(4), 
+	        				rs.getString(6));
+	        		forhour.add(sco);
+	        	}
+        	}
+        } catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return map.descendingMap();
+	}
 	
 	
 }

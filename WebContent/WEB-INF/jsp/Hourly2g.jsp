@@ -8,21 +8,20 @@
 	<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-	<header><span class="title">Game studio - Hourly statistics best players</span></header>
+	<header><span class="title">Game studio - Hourly statistics best players for 2 games</span></header>
 <%@ include file="StatMenu.jsp" %>
 
 <c:forEach items="${hourlyreport}" var="hrr">
 	<h2>Best players - ${hrr.key}</h2>
 	<table>
-	<tr><th>Pos.</th><th>Score</th><th>Game</th><th>Name</th><th>Mail</th><th>Date</th></tr><c:set var="count" value="1" scope="page" />
+	<tr><th>Pos.</th><th>Score</th><th>Name</th><th>Mail</th><th>Date</th></tr><c:set var="count" value="1" scope="page" />
 	<c:forEach items="${hrr.value}" var="score">
 	    <tr>
 	        <td>${count}.</td>
 	        <td>${score.getScoreTime()}</td>
-	        <td>${score.getGame().getName()}</td>
 	        <td>${score.getUser().getName()}</td>
 	        <td>${score.getUser().getMail()}</td>
-	        <td>${score.getFmtDate()}</td>
+	        <td>${score.getDate()}</td>
 	        <c:set var="count" value="${count + 1}" scope="page"/>
 	    </tr>
 	</c:forEach>

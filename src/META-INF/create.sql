@@ -114,5 +114,5 @@ create or replace view scoretablehourly as
 select scoretable.*, TO_CHAR(dathr, 'dd. mm. yyyy HH24:mi:ss') as hourly from scoretable order by dathr DESC, score ASC ;
 
 create or replace view scoretablehourly2g as 
-select usrid, sum(score) as scsum, max(dat) as dats, max(datfmt) as datfmts, dathr, hourly from scoretablehourly where gameid in (1,2) group by dathr, hourly, usrid order by dathr, scsum;
+select usrid, sum(score) as scsum, max(dat) as dats, max(datfmt) as datfmts, dathr, hourly from scoretablehourly where gameid in (1,2) group by dathr, hourly, usrid order by dathr DESC, scsum ASC;
 
