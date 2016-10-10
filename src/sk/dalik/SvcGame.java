@@ -43,6 +43,8 @@ public class SvcGame extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setCharacterEncoding("windows-1250");
+		request.setCharacterEncoding("UTF-8");
 		if(request.getParameter("stats")!=null && "show".equals(request.getParameter("stats"))) // get DBO stat
 		{
 			StatisticsDTO stats;
@@ -74,6 +76,8 @@ public class SvcGame extends HttpServlet {
 			CommentService comme = common;
 			ScoreService score =  common;
 			RatingService rating = common;
+			
+			
 			
 			if(game.listGames().isEmpty()) // we need to create games 
 			{
@@ -176,7 +180,10 @@ public class SvcGame extends HttpServlet {
 			case "play": 
 				JSONObject child = new JSONObject(); // game must use separate json
 				request.setAttribute("json", child);
-
+				
+				request.setAttribute("commonsvc", common);
+				request.setAttribute("commonsvcgam", gam);
+				
 				request.getRequestDispatcher(gam.getServletPath()).include(request, response);
 				ScoreEntity scr = (ScoreEntity) request.getAttribute("score");   
 				if(scr!=null && user.me()!=null)

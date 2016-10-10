@@ -1,9 +1,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%><%@ page language="java" contentType="text/html; charset=windows-1250"  pageEncoding="windows-1250"%>
 <style>
-
+#rexy {
+border: 1px solid red;
+}
 #rexy>span {
 	border-radius: 0.2em;
 	padding: 0.2em;
+	margin-top: 0.2em;
+	display: inline-block;
 } 
 
 .rwrd {

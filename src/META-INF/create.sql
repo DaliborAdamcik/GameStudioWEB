@@ -2,6 +2,7 @@
 drop index usrs_lck;
 drop index usrs_author;
 drop index game_enab;
+drop table gamsets;
 drop table logons;
 drop table rating;
 drop table score;
@@ -67,6 +68,14 @@ create table score (
   score integer not null check (score >0),
   descript integer,
   foreign key (usrid) references usrs(usrid) on delete set null,
+  foreign key (gameid) references game(gameid) on delete set null
+);
+
+create table gamsets (
+  gameid integer,
+  sname VARCHAR2 (32 BYTE) unique not null,
+  val VARCHAR2 (2048 BYTE) not null,
+  dat date default current_timestamp,
   foreign key (gameid) references game(gameid) on delete set null
 );
 

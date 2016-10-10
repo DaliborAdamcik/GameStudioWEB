@@ -28,12 +28,13 @@ function regexmatch_parse(dat)
 
 function regexmatch_initGame(dat)
 {
-	var outer = '<div class="hotwo"><div>Regex to find a word</div><div id="regs"></div><div id="rtries"></div><div></div></div><div id="rexy">';
+	var outer = '<div class="hotwo"> <div>Regex to find a word</div><div id="regs"></div> <div id="rtries"></div> </div>';
+	outer+= '<div id="rexy">';
 	
 	
 	var counter = 0;
 	dat.words.forEach(function (word)  {
-		outer+=  '<span id="rwo'+(counter++)+'" class="rwrd" onclick="rgm_play(this);"/>'+word+'</span>&nbsp;';
+		outer+=  '<span id="rwo'+(counter++)+'" class="rwrd" onclick="rgm_play(this);"/>'+word+'</span> ';
 	});
 	
 	document.getElementById('gamecontent').innerHTML = outer+'</div>';
@@ -41,7 +42,7 @@ function regexmatch_initGame(dat)
 
 function rgm_play(sender)
 {
-	gameAjax('action=tryhit&word='+sender.innerText+'&retid='+sender.id);
+	gameAjax('action=tryhit&word='+encodeURI(sender.innerText)+'&retid='+sender.id);
 	
 	/*if(mem_first!=null && mem_second!= null) // cant click
 		return;
