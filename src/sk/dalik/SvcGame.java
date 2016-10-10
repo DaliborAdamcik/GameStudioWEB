@@ -265,6 +265,7 @@ public class SvcGame extends HttpServlet {
 				request.getSession().setAttribute("userID", null);
 				user.setCurrUser(null);
 				jsona.put("result", true);
+				jsona.put("signedout", true);
 				return;
 			}
 			

@@ -42,22 +42,5 @@ function regexmatch_initGame(dat)
 
 function rgm_play(sender)
 {
-	gameAjax('action=tryhit&word='+encodeURI(sender.innerText)+'&retid='+sender.id);
-	
-	/*if(mem_first!=null && mem_second!= null) // cant click
-		return;
-
-	if(mem_first==null)
-		mem_first = sender;
-	else
-	mem_second = sender;
-	
-	var regex = /[\d]+/g;
-	var oid = regex.exec(sender.id);
-	if(oid!=null)
-	{
-		
-		console.log("send data:", oid[0]);
-	}*/
-	
+	gameAjax('action=tryhit&word='+encodeURI(sender.innerText)+'&retid='+sender.id);	
 }

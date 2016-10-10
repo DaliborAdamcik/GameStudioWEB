@@ -38,7 +38,8 @@ function initGameList(gamelist)
 			}, 'GET'); // ajax
 	});// foreach
 
-	menu+='<span onclick="gs_showstatistics();">Statistics</span> ';
+	// TODO: hidden statistic on welcome page
+	//menu+='<span onclick="gs_showstatistics();">Statistics</span> ';
 	menu+='<span id="gs_signin" onclick="gs_signin_showdlg();">Sign IN</span> ';
 	
 	document.getElementById('mainmenu').innerHTML= menu;
@@ -130,11 +131,21 @@ function studio_parse(resp) // an entry point for json DATA
 		alert('error: '+dat.error);
 	}
 
-	if(dat.auth)
-		gs_signin(dat.auth);
-	
 	if(dat.gamelist)
 		initGameList(dat.gamelist);
+
+	if(dat.username) {
+		dat.signed = true;
+		gs_setsigned(dat);
+	}
+	
+	if(dat.auth)
+	{
+		gs_signin(dat.auth);
+		if(dat.auth.signedout)
+			location.reload();
+	}
+		
 	
 	if(dat.gameout) // game logic run
 		gs_gamelogicmain(dat.gameout);
@@ -145,13 +156,9 @@ function studio_parse(resp) // an entry point for json DATA
 		gs_setrate(dat.rating.user?dat.rating.user:0, 'ratte');
 	}
 	
-	if(dat.username) {
-		dat.signed = true;
-		gs_setsigned(dat);
-	}
-	
 	if(dat.tooManyTries) 
 		alert("You cant play '"+dat.tooManyTries+"' moore times due to limit of play.");
+		
 }
 
 function gs_gamelogicmain(gamedata) // put data to game js, estimate won / loose game
