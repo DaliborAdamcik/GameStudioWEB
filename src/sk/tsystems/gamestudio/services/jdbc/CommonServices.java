@@ -3,8 +3,11 @@ package sk.tsystems.gamestudio.services.jdbc;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import sk.tsystems.gamestudio.entity.GameEntity;
+import sk.tsystems.gamestudio.entity.SettingEntity;
 
 public class CommonServices extends ScoreSvc {
 	public CommonServices() {
@@ -67,6 +70,24 @@ public class CommonServices extends ScoreSvc {
 			e.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public List<SettingEntity> listSettings() {
+		List<SettingEntity> result = new ArrayList<>();
+		
+		try (PreparedStatement stmt = this.conn()
+				.prepareStatement("select * from gamsets")) {
+
+			try (ResultSet rs = stmt.executeQuery()) {
+				while(rs.next()) {
+					result.add(new SettingEntity(getGame(rs.getInt(1)), rs.getString(2), rs.getString(3)));
+				} 
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 }

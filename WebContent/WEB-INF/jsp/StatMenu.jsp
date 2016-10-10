@@ -8,5 +8,5 @@ function openMe(link) {
 <div id="mainmenu">
 	<span onclick="openMe('HourlyStat');">BP All</span> 
 	<span onclick="openMe('HourlyStat2g');">BP 2 Game</span> 
-<!-- 	<span id="gs_signin" onclick="gs_signin_showdlg();">Sign IN</span>  -->
+	<span id="gs_signin" onclick="openMe('SetTings');">Settings</span> 
 </div>
