@@ -69,9 +69,9 @@ public class MinesWeb extends HttpServlet {
 				GameService gamSvc = (GameService) request.getAttribute("commonsvc");
 				GameEntity gamEnt = (GameEntity) request.getAttribute("commonsvcgam");
 				
-				row = gamSvc.gameSetting(gamEnt, "mines_rows", Integer.class, 5);
-				col = gamSvc.gameSetting(gamEnt, "mines_cols", Integer.class, 5);
-				mines = gamSvc.gameSetting(gamEnt, "mines_mines", Integer.class, 5);
+				row = gamSvc.gameSetting(gamEnt, "mines_rows", Integer.class, 8);
+				col = gamSvc.gameSetting(gamEnt, "mines_cols", Integer.class, 8);
+				mines = gamSvc.gameSetting(gamEnt, "mines_mines", Integer.class, 10);
 				
 				json.put("row", row);
 				json.put("col", col);

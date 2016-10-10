@@ -17,9 +17,9 @@ function mines_doaction(caller, action) {
 
 function mines_newgame()
 {
-	var row = document.getElementById('mine_row').value;
-	var col = document.getElementById('mine_col').value;
-	var mine = document.getElementById('mine_mine').value;
+	var row = 4; // document.getElementById('mine_row').value;
+	var col = 4; //document.getElementById('mine_col').value;
+	var mine = 4; //document.getElementById('mine_mine').value;
 	minesAjax('action=new&row='+row+'&col='+col+'&mine='+mine);
 }
 
@@ -29,8 +29,8 @@ function mines_parse(dat)
 	if(dat.state)
 		document.getElementById('state').innerHTML = dat.state;
 
-	if(dat.nummines)
-		document.getElementById('unmark').innerHTML = dat.nummines;
+	if(typeof dat.nummines != 'undefined')
+		document.getElementById('unmark').innerHTML = (dat.nummines>0?dat.nummines:0);
 
 	switch(dat.client)
 	{
