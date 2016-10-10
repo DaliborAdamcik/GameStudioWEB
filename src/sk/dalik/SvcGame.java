@@ -184,6 +184,19 @@ public class SvcGame extends HttpServlet {
 				request.setAttribute("commonsvc", common);
 				request.setAttribute("commonsvcgam", gam);
 				
+				String action = request.getParameter("action");
+				if(action == null )
+					action = "none";
+				
+				if(user.me()!=null && action.compareTo("new")==0) {
+					if(score.gameRuns(user.me(), gam) >= game.gameSetting(gam, "run_limit_"+gam.getID(), Integer.class, 2))
+					{
+						json.put("tooManyTries", gam.getName());
+						return;
+					}
+					
+				}
+				
 				request.getRequestDispatcher(gam.getServletPath()).include(request, response);
 				ScoreEntity scr = (ScoreEntity) request.getAttribute("score");   
 				if(scr!=null && user.me()!=null)

@@ -93,10 +93,14 @@ function gs_signin(dat)
 		case 'register': gs_hideregister(); break; 
 	}
 
+	gs_setsigned(dat);
+}
+
+function gs_setsigned(dat) {
 	var sigbut = document.getElementById('gs_signin');
 	var ratse = document.getElementById('rate');
 	var comse = document.getElementById('addcoment');
-	
+
 	if(dat.signed)
 	{
 		loggeduser = dat.username; 
@@ -110,5 +114,5 @@ function gs_signin(dat)
 		sigbut.innerHTML = "Sign IN";
 		ratse.style.display='none';
 		comse.style.display='none';
-	}
+	}	
 }

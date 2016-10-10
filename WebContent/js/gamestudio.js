@@ -144,6 +144,14 @@ function studio_parse(resp) // an entry point for json DATA
 		gs_setrate(dat.rating.game, 'ratinggold');
 		gs_setrate(dat.rating.user?dat.rating.user:0, 'ratte');
 	}
+	
+	if(dat.username) {
+		dat.signed = true;
+		gs_setsigned(dat);
+	}
+	
+	if(dat.tooManyTries) 
+		alert("You cant play '"+dat.tooManyTries+"' moore times due to limit of play.");
 }
 
 function gs_gamelogicmain(gamedata) // put data to game js, estimate won / loose game

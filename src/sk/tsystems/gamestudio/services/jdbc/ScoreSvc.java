@@ -106,5 +106,23 @@ abstract class ScoreSvc extends RatingSvc implements ScoreService {
 		return map.descendingMap();
 	}
 
+	public int gameRuns(UserEntity usr, GameEntity game) {
+		try(PreparedStatement stmt = this.conn().prepareStatement("select count(*) as gamecount from score where usrid = ? and gameid = ?"))
+        {
+			stmt.setInt(1, usr.getID());
+			stmt.setInt(2, game.getID());
+			
+        	try(ResultSet rs = stmt.executeQuery())
+        	{
+	        	if(rs.next())
+	        		return rs.getInt(1);
+        	}
+        } catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;		
+	}
+	
+	
 	
 }
