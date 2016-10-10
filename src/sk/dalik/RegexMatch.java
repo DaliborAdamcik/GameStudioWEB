@@ -65,13 +65,16 @@ public class RegexMatch extends HttpServlet {
 			int i = 0;
 			String txt;
 			String reg;
+			int needToSucces = gamSvc.gameSetting(gamEnt, "rgxr_needtosuccess"+i, Integer.class, 4);
+			int maxNoHitTry = gamSvc.gameSetting(gamEnt, "rgxr_maxtryperword"+i, Integer.class, 4);
+
 			ArrayList<Regexo> levels = new ArrayList<>();
 			do {
 				reg = gamSvc.gameSetting(gamEnt, "rgxr_"+i, String.class, null);
 				txt = gamSvc.gameSetting(gamEnt, "rgxs_"+i, String.class, null);
 				i++;
 				if(reg!=null&& txt!=null)
-					levels.add(new Regexo(txt, reg));
+					levels.add(new Regexo(txt, reg, needToSucces, maxNoHitTry));
 				
 			} while (reg!=null && txt!=null);
 			
@@ -112,7 +115,7 @@ public class RegexMatch extends HttpServlet {
 		if(field.isWin())
 		{
 			ScoreEntity myscore = new ScoreEntity((int) (System.currentTimeMillis() - (long) session.getAttribute("regexmatch-time")),
-					0); 
+					field.hitCount); 
 			
 			request.setAttribute("score", myscore);
 			json.put("score", myscore.getScore());
@@ -136,16 +139,20 @@ public class RegexMatch extends HttpServlet {
 		private Pattern test;
 		private String currTest;
 		private String target;
+		private int maxMiss;
+		private int needToSuccess;
 
-		public Regexo(String text, String rexes) {
+		public Regexo(String text, String rexes, int maxMiss, int needToSuccess) {
 			this.text = text;
 			words = new ArrayList<>(Arrays.asList(text.split(" ")));
 			regexs = new ArrayList<>(Arrays.asList(rexes.split("\\|")));
 			Collections.shuffle(regexs);
 
-			tryCnt = 0;
+			tryCnt = 1;
 			pos = -1;
 			hitCount = 0;
+			this.maxMiss = maxMiss;
+			this.needToSuccess = needToSuccess;
 			nextPat();
 		}
 
@@ -187,12 +194,13 @@ public class RegexMatch extends HttpServlet {
 
 				nextPat();
 				hitCount++;
+				tryCnt=1;
 
 				return true;
 
 			} catch (NoHitException e) {
-				if (tryCnt++ == 2) {
-					tryCnt++;
+				if (tryCnt++ == maxMiss) {
+					tryCnt=1;
 					nextPat();
 				}
 				return false;

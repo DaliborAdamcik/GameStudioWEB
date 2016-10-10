@@ -11,19 +11,22 @@ function regexmatch_parse(dat)
 	
 	if(dat.retid) {
 		document.getElementById(dat.retid).className = (dat.hit?'rehit':'remiss');
+		
 		if(dat.hit) {
 			document.getElementById(dat.retid).onClick = function () {};
-			
-			document.getElementById("rexy").childNodes.forEach(function (child) {
-				if(child.className=='remiss')
-					child.className='rwrd';
-			});
 		}
+	}
+	
+	if(dat.hit||document.getElementById('regs').innerText != dat.regex) {
+		document.getElementById("rexy").childNodes.forEach(function (child) {
+			if(child.className=='remiss')
+				child.className='rwrd';
+		});
 	}
 	
 	document.getElementById('rtries').innerText = 'Try #'+dat.tryc;
 	//document.getElementById('regs').innerText = 'Regexs count: '+dat.size;
-	document.getElementById('regs').innerHTML = dat.regex;
+	document.getElementById('regs').innerText = dat.regex;
 }
 
 function regexmatch_initGame(dat)
