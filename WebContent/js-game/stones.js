@@ -1,7 +1,7 @@
 function stones_newgame()
 {
-	var row = document.getElementById('row').value;
-	var col = document.getElementById('col').value;
+	var row = 4;//document.getElementById('row').value;
+	var col = 4;//document.getElementById('col').value;
 	stonesAjax('action=new&row='+row+'&col='+col);
 }
 

@@ -15,15 +15,10 @@ function guess_parse(dat)
 	}
 	
 	if(dat.won)
-		{
-			guess_removeitems(dat.number, -1);
-			guess_removeitems(dat.number, 1);
-		}
-	
-/*	if(dat.hit)
-		document.getElementById('iguess').innerHTML = 'I guess a '+ dat.hit +' number';
-	else
-		document.getElementById('iguess').innerHTML = '';*/
+	{
+		guess_removeitems(dat.number, -1);
+		guess_removeitems(dat.number, 1);
+	}
 }
 
 function guess_removeitems(from, inc)

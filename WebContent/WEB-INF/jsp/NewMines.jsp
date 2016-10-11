@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=windows-1250"
     pageEncoding="windows-1250"%>
-<input type='button' value='Start new game :)' onclick="mines_newgame();" />
+<!-- <input type='button' value='Start new game :)' onclick="mines_newgame();" /> -->
 <style>
 	#unamarkedmi {
 		text-align: center;
