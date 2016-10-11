@@ -23,6 +23,9 @@ public class ColdStart extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.getWriter().print("disabled");
+		/*
+		
 		OutputStream os = new OutputStream() {
 			@Override
 			public void write(int b) throws IOException {
@@ -49,7 +52,7 @@ public class ColdStart extends HttpServlet {
 		} finally {
 			System.setOut(oldOut);
 			System.setErr(oldErr);
-		}
+		}*/
 	}
 
 }
