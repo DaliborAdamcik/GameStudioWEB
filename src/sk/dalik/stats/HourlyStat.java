@@ -18,7 +18,7 @@ import sk.tsystems.gamestudio.services.jdbc.CommonServices;
  * Servlet implementation class HourlyStat
  */
 @WebServlet("/HourlyStat")
-public class HourlyStat extends HttpServlet {
+public class HourlyStat extends StatSuper {
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -33,21 +33,24 @@ public class HourlyStat extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try (CommonServices common = new sk.tsystems.gamestudio.services.jdbc.CommonServices();) {
+		CommonServices common = getSvcs(request);
 			
-			GameEntity game = null;
-			try {
-				Integer gameid = Integer.parseInt(request.getParameter("gameid"));
-				game = common.getGame(gameid);
-			} catch(Exception e) {
-				game = null;
-			}
-			
-			Map<String, List<ScoreEntity>> hs = common.topScoresHourly(game);
-			request.setAttribute("games", common.listGames());
-			request.setAttribute("hourlyreport", hs);
-			request.getRequestDispatcher("/WEB-INF/jsp/hourscore.jsp").forward(request, response);
+		GameEntity game = null;
+		try {
+			Integer gameid = Integer.parseInt(request.getParameter("gameid"));
+			game = common.getGame(gameid);
+		} catch(Exception e) {
+			game = null;
 		}
+		
+		Map<String, List<ScoreEntity>> hs = common.topScoresHourly(game);
+		request.setAttribute("games", common.listGames());
+		request.setAttribute("hourlyreport", hs);
+		request.getRequestDispatcher("/WEB-INF/jsp/hourscore.jsp").forward(request, response);
+	}
+	
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req, resp);
 	}
 
 }

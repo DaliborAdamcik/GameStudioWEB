@@ -9,4 +9,5 @@ function openMe(link) {
 	<span onclick="openMe('HourlyStat');">BP All</span> 
 	<span onclick="openMe('HourlyStat2g');">BP 2 Game</span> 
 	<span id="gs_signin" onclick="openMe('SetTings');">Settings</span> 
+	<span onclick="openMe('HourlyStat?logout=true');">Logout</span> 
 </div>
