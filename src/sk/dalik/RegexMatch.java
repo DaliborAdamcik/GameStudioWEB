@@ -111,14 +111,18 @@ public class RegexMatch extends HttpServlet {
 		json.put("size", field.regexCount());
 
 
-		json.put("won", field.isWin());
-		if(field.isWin())
+		json.put("won", false);
+		json.put("gend", field.gameEnd());
+		if(field.gameEnd())
 		{
-			ScoreEntity myscore = new ScoreEntity((int) (System.currentTimeMillis() - (long) session.getAttribute("regexmatch-time")),
-					field.hitCount); 
-			
-			request.setAttribute("score", myscore);
-			json.put("score", myscore.getScore());
+			json.put("won", field.isWin());
+			if(field.isWin()) {
+				ScoreEntity myscore = new ScoreEntity((int) (System.currentTimeMillis() - (long) session.getAttribute("regexmatch-time")),
+						field.hitCount); 
+				
+				request.setAttribute("score", myscore);
+				json.put("score", myscore.getScore()); 
+			}
 		}
 	}
 	
@@ -153,6 +157,8 @@ public class RegexMatch extends HttpServlet {
 			hitCount = 0;
 			this.maxMiss = maxMiss;
 			this.needToSuccess = needToSuccess;
+			if(this.needToSuccess>regexs.size())
+				this.needToSuccess = regexs.size();
 			nextPat();
 		}
 
@@ -208,7 +214,7 @@ public class RegexMatch extends HttpServlet {
 		}
 
 		public boolean isWin() {
-			return hitCount == regexs.size();
+			return hitCount >= needToSuccess;
 		}
 		
 		public int tryCount() {
@@ -221,7 +227,11 @@ public class RegexMatch extends HttpServlet {
 		
 		public int regexCount() {
 			return regexs.size();
-		}		
+		}	
+		
+		public boolean gameEnd() {
+			return pos >= regexs.size();
+		}
 
 	}
 }

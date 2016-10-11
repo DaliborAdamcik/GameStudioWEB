@@ -27,6 +27,13 @@ function regexmatch_parse(dat)
 	document.getElementById('rtries').innerText = 'Try #'+dat.tryc;
 	//document.getElementById('regs').innerText = 'Regexs count: '+dat.size;
 	document.getElementById('regs').innerText = dat.regex;
+	
+	if(dat.gend) {
+		document.getElementById('rexy').className+=' fadeo';
+
+		if(!dat.won)
+			alert("You loose game. Try again!");
+	}
 }
 
 function regexmatch_initGame(dat)
