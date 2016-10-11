@@ -47,14 +47,14 @@ public class SvcGame extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		if(request.getParameter("stats")!=null && "show".equals(request.getParameter("stats"))) // get DBO stat
 		{
-			StatisticsDTO stats;
+			/*StatisticsDTO stats;
 			try {
 				stats = new StatisticsDTO();
-				request.setAttribute("stats", stats);
+				request.setAttribute("stats", stats);*/
 				request.getRequestDispatcher("/WEB-INF/jsp/Stats.jsp").forward(request, response);
-			} catch (Exception e) {
+			/*} catch (Exception e) {
 				e.printStackTrace();
-			} 
+			} */
 			return;
 		}
 		
