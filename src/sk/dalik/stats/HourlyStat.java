@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sk.tsystems.gamestudio.entity.GameEntity;
 import sk.tsystems.gamestudio.entity.ScoreEntity;
 import sk.tsystems.gamestudio.services.jdbc.CommonServices;
 
@@ -33,8 +34,17 @@ public class HourlyStat extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try (CommonServices common = new sk.tsystems.gamestudio.services.jdbc.CommonServices();) {
-			Map<String, List<ScoreEntity>> hs = common.topScoresHourly();
-			//System.out.println(hs);
+			
+			GameEntity game = null;
+			try {
+				Integer gameid = Integer.parseInt(request.getParameter("gameid"));
+				game = common.getGame(gameid);
+			} catch(Exception e) {
+				game = null;
+			}
+			
+			Map<String, List<ScoreEntity>> hs = common.topScoresHourly(game);
+			request.setAttribute("games", common.listGames());
 			request.setAttribute("hourlyreport", hs);
 			request.getRequestDispatcher("/WEB-INF/jsp/hourscore.jsp").forward(request, response);
 		}

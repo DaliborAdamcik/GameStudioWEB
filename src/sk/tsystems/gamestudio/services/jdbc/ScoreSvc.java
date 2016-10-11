@@ -19,6 +19,7 @@ abstract class ScoreSvc extends RatingSvc implements ScoreService {
 	private final String INSERT_Q = "INSERT INTO SCORE (USRID, GAMEID, DAT, SCORE, descript) VALUES (?, ?, ?, ?, ?)";
 	private final String SELECT_Q = "SELECT * FROM (SELECT USRID, DAT, SCORE, descript, datFmt FROM scoretable WHERE GAMEID = ? AND scoretable.dat>= (select last_hr from lasthr) ) WHERE ROWNUM <= 10";
 	private final String SELECT_HOURLY = "select * from scoretablehourly";
+	private final String SELECT_HOURLY_W = "select * from scoretablehourly WHERE GAMEID = ?";
 	private final String SELECT_HOURLY2G = "select * from scoretablehourly2g";
 	private UserService user;
 
@@ -75,12 +76,19 @@ abstract class ScoreSvc extends RatingSvc implements ScoreService {
 	}
 	
 	@Override
-	public Map<String, List<ScoreEntity>> topScoresHourly() {
+	public Map<String, List<ScoreEntity>> topScoresHourly(GameEntity game) {
 		TreeMap<String, List<ScoreEntity>> map = new TreeMap<>();
+		String sql = SELECT_HOURLY;
+		
+		if(game!=null)
+			sql = SELECT_HOURLY_W;
 				
 		
-		try(PreparedStatement stmt = this.conn().prepareStatement(SELECT_HOURLY))
+		try(PreparedStatement stmt = this.conn().prepareStatement(sql))
         {
+			if(game!=null)
+				stmt.setInt(1, game.getID());
+			
         	try(ResultSet rs = stmt.executeQuery())
         	{
 	        	while(rs.next())

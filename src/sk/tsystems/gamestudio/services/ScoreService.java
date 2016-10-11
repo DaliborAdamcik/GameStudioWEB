@@ -11,7 +11,7 @@ import sk.tsystems.gamestudio.entity.UserEntity;
 public interface ScoreService  extends AutoCloseable {
 	boolean addScore(ScoreEntity score);
 	List<ScoreEntity> topScores(GameEntity game);
-	Map<String, List<ScoreEntity>> topScoresHourly();
+	Map<String, List<ScoreEntity>> topScoresHourly(GameEntity game);
 	Map<String, List<TwoGameDTO>> topScoresHourly2g();
 	int gameRuns(UserEntity usr, GameEntity game);
 }
