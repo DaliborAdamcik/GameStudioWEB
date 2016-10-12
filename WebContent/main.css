@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
-@import 'https://fonts.googleapis.com/css?family=Katibeh';
-@import 'https://fonts.googleapis.com/css?family=Oxygen';
-@import 'https://fonts.googleapis.com/css?family=Pattaya';
+@import 'gfonts/Katibeh.css';
+@import 'gfonts/Oxygen.css';
+@import 'gfonts/Pattaya.css';
 
 html, body {
 	background-color: #7575a3;

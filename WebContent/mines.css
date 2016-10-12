@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-@import 'https://fonts.googleapis.com/css?family=Lobster';
+@import 'gfonts/Lobster.css';
 
 .close {
     background: url('img/tiles.png') -48px -48px;

@@ -101,7 +101,7 @@ create table comments (
 );  
 
 create or replace view lasthr as /* an last hour view */
-select to_date(TO_CHAR(sysdate, 'dd-mm-yyyy HH24')||':00:00', 'dd-mm-yyyy hh24:mi:ss')-1/24 as LAST_HR from dual;
+select to_date(TO_CHAR(sysdate, 'dd-mm-yyyy HH24')||':00:00', 'dd-mm-yyyy hh24:mi:ss') as LAST_HR from dual;
 
 create or replace view scoretable as
 SELECT score.*, 
