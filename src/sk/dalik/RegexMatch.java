@@ -183,7 +183,7 @@ public class RegexMatch extends HttpServlet {
 			if (!mat.find())
 				throw new RuntimeException("no match");
 
-			target = mat.group(1);
+			target = mat.group(1).trim();
 			System.out.printf("regex hlada: pat: '%s' slovo:'%s'\r\n", currTest, target);
 
 			return true;

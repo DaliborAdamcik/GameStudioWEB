@@ -62,7 +62,7 @@ public abstract class StatSuper extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("windows-1250");
-		request.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding("windows-1250");
 
 		try (CommonServices common = new sk.tsystems.gamestudio.services.jdbc.CommonServices();) {
 			request.setAttribute("comsvc", common);
